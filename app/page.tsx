@@ -3,27 +3,28 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import Footer from "@/app/components/Footer";
+import FeatureCard from "@/app/components/FeatureCard";
 
 const features = [
   {
     icon: "📌",
     title: "Post to the board",
-    body: "Share what's on your mind with your whole campus.",
+    body: "Say what's on your mind. The whole campus sees it.",
   },
   {
     icon: "🔁",
     title: "Fresh every week",
-    body: "Every Monday at midnight, the board clears and a fresh week begins.",
+    body: "Monday at midnight, it's wiped. Start again.",
   },
   {
     icon: "🎓",
     title: "Students only",
-    body: "Verified with your campus email. One board, your whole school.",
+    body: "Your campus email gets you in. Nobody else.",
   },
   {
     icon: "💬",
     title: "React & comment",
-    body: "Respond to posts with emoji reactions or leave a comment.",
+    body: "React, reply, repeat.",
   },
 ];
 
@@ -134,20 +135,7 @@ export default function Home() {
         <section className="pb-16 px-6">
           <div className="max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
             {features.map((f) => (
-              <div
-                key={f.title}
-                className="rounded-2xl p-7"
-                style={{
-                  background: "var(--card)",
-                  border: "1px solid var(--border)",
-                }}
-              >
-                <span className="text-3xl block mb-4">{f.icon}</span>
-                <h3 className="font-bold text-base mb-2">{f.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                  {f.body}
-                </p>
-              </div>
+              <FeatureCard key={f.title} icon={f.icon} title={f.title} body={f.body} />
             ))}
           </div>
         </section>
