@@ -6,7 +6,7 @@ The current site (`app/page.tsx`) is a clean but flat single-page marketing site
 
 ## Scope
 
-In scope: hero section layout/copy, feature card motion/copy, Privacy Policy content, Terms of Service content.
+In scope: hero section layout/copy, feature card motion/copy, Privacy Policy content, Terms of Service content, README rewrite.
 
 Out of scope (explicitly deferred, not because they're wrong — just not part of this pass): waitlist form/button styling, badge ("Coming to IVC · Fall 2026"), footer, theme toggle, changelog page. The energy stays concentrated in the hero and feature cards rather than spread across every element.
 
@@ -74,6 +74,27 @@ New section, **"Advertising & sponsored content"**:
 > On Board displays two kinds of promoted content, each clearly labeled: **Advertisements** (labeled in yellow), served by third-party ad providers, and **Sponsored** posts (labeled in blue), purchased by local accounts to promote their own content. Sponsored posts must still comply with the Content rules above. We are not responsible for the content, accuracy, or claims made in Advertisements or Sponsored posts.
 
 No other sections change. (Not touching the existing "zionism" clause in Content rules — flagged separately to you, out of scope here.)
+
+## README (`README.md`)
+
+Currently reads as setup instructions (install steps, env var table, Next.js-16-breaking-changes warning, changelog implementation internals) — the repo exists on GitHub purely for others to look at, not to be run, so replace the whole file with a showcase-only version:
+
+```markdown
+# On Board — Web
+
+The marketing site for **On Board**, a weekly campus bulletin board app for iOS. Students join their campus's board, post anonymously, react, and comment — and every Monday, the board resets to a clean slate.
+
+**[onboardapp.org](https://onboardapp.org)**
+
+## Pages
+
+- `/` — landing page and waitlist signup
+- `/changelog` — latest release notes, pulled automatically from the App Store
+- `/privacy` — privacy policy
+- `/terms` — terms of service
+
+Built with Next.js, React, Tailwind CSS, and Supabase.
+```
 
 ## Testing / verification
 
