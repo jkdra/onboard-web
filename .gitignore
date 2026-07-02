@@ -42,3 +42,6 @@ next-env.d.ts
 
 # brainstorming companion
 .superpowers/
+
+# local dev notes
+CLAUDE.local.md
