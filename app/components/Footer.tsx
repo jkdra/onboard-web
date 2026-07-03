@@ -1,22 +1,33 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 
+type Theme = "system" | "light" | "dark";
+
+const THEME_EVENT = "onboard-theme-change";
+
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(THEME_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(THEME_EVENT, callback);
+  };
+}
+
+function getSnapshot(): Theme | null {
+  return (localStorage.getItem("theme") as Theme | null) ?? "system";
+}
+
+function getServerSnapshot(): Theme | null {
+  return null;
+}
+
 export default function Footer() {
-  const [theme, setTheme] = useState<"system" | "light" | "dark">("system");
-  const [mounted, setMounted] = useState(false);
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  useEffect(() => {
-    setMounted(true);
-    const storedTheme = localStorage.getItem("theme") as "system" | "light" | "dark" | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-    }
-  }, []);
-
-  const handleThemeChange = (newTheme: "system" | "light" | "dark") => {
-    setTheme(newTheme);
+  const handleThemeChange = (newTheme: Theme) => {
     if (newTheme === "system") {
       localStorage.removeItem("theme");
       document.documentElement.removeAttribute("data-theme");
@@ -24,6 +35,7 @@ export default function Footer() {
       localStorage.setItem("theme", newTheme);
       document.documentElement.setAttribute("data-theme", newTheme);
     }
+    window.dispatchEvent(new Event(THEME_EVENT));
   };
 
   return (
@@ -37,8 +49,8 @@ export default function Footer() {
         <Link href="/terms" className="hover:underline">Terms of Service</Link>
       </div>
 
-      {mounted && (
-        <div 
+      {theme !== null && (
+        <div
           className="inline-flex items-center gap-1 p-1 rounded-full text-xs font-medium"
           style={{ 
             background: "var(--card)", 
