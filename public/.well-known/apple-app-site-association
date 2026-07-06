@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "CY6ALA5KQP.org.onboardapp.onboard",
+        "paths": [ "*" ]
+      }
+    ]
+  }
+}

@@ -45,3 +45,6 @@ next-env.d.ts
 
 # local dev notes
 CLAUDE.local.md
+
+# local preview server config
+.claude/launch.json
