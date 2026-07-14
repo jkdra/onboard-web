@@ -72,10 +72,15 @@ const POSTS: ScenePost[] = [
 
 const NARRATION: [number, number, string][] = [
   // [appear, disappear, text] on scroll progress
-  [0.0, 0.18, "Post it."],
-  [0.18, 0.38, "The whole campus sees it."],
-  [0.38, 0.56, "React, reply, repeat."],
+  [0.0, 0.16, "Post it."],
+  [0.16, 0.32, "The whole campus sees it."],
+  [0.32, 0.48, "React, reply, repeat."],
 ];
+
+// Countdown ticks from ~2.5hrs to 0 across this scroll window, turning red
+// once under 10 minutes remain — the "clears soon" urgency moment.
+const COUNTDOWN_START_SECONDS = 8954;
+const COUNTDOWN_RED_THRESHOLD = 600;
 
 function SceneCard({
   post,
@@ -89,15 +94,15 @@ function SceneCard({
   const start = index * 0.07;
   const end = start + 0.12;
   // Fly in from below, settle at pinned position, sweep away on the wipe.
-  const opacity = useTransform(progress, [start, end, 0.62, 0.72], [0, 1, 1, 0]);
+  const opacity = useTransform(progress, [start, end, 0.65, 0.74], [0, 1, 1, 0]);
   const yIn = useTransform(
     progress,
-    [start, end, 0.62, 0.72],
+    [start, end, 0.65, 0.74],
     ["60vh", post.y, post.y, "-70vh"]
   );
   const rotate = useTransform(
     progress,
-    [start, end, 0.62, 0.72],
+    [start, end, 0.65, 0.74],
     [post.rotate * 3, post.rotate, post.rotate, post.rotate * 4]
   );
 
@@ -150,8 +155,50 @@ function NarrationLine({
   );
 }
 
+function Countdown({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [0.48, 0.52, 0.6, 0.64], [0, 1, 1, 0]);
+  const scale = useTransform(progress, [0.48, 0.54], [0.7, 1]);
+  const seconds = useTransform(progress, [0.52, 0.64], [COUNTDOWN_START_SECONDS, 0]);
+  const label = useTransform(seconds, (s) => {
+    const v = Math.max(0, Math.round(s));
+    const h = String(Math.floor(v / 3600)).padStart(2, "0");
+    const m = String(Math.floor((v % 3600) / 60)).padStart(2, "0");
+    const sec = String(v % 60).padStart(2, "0");
+    return `${h}h ${m}m ${sec}s`;
+  });
+  const bg = useTransform(seconds, (s) =>
+    s <= COUNTDOWN_RED_THRESHOLD ? "#e5484d" : "var(--card)"
+  );
+  const border = useTransform(seconds, (s) =>
+    s <= COUNTDOWN_RED_THRESHOLD ? "#e5484d" : "var(--border)"
+  );
+  const fg = useTransform(seconds, (s) => (s <= COUNTDOWN_RED_THRESHOLD ? "#ffffff" : "var(--text)"));
+  const fgSecondary = useTransform(seconds, (s) =>
+    s <= COUNTDOWN_RED_THRESHOLD ? "rgba(255,255,255,0.75)" : "var(--text-secondary)"
+  );
+
+  return (
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ zIndex: 10 }}>
+      <motion.div
+        className="rounded-3xl px-8 py-6 text-center shadow-xl"
+        style={{ opacity, scale, background: bg, border: "1px solid", borderColor: border, color: fg }}
+      >
+        <motion.p
+          className="text-xs font-bold uppercase tracking-widest mb-2"
+          style={{ color: fgSecondary }}
+        >
+          Clears soon
+        </motion.p>
+        <motion.p className="font-extrabold tabular-nums" style={{ fontSize: "var(--step-3)" }}>
+          {label}
+        </motion.p>
+      </motion.div>
+    </div>
+  );
+}
+
 function WipeCopy({ progress }: { progress: MotionValue<number> }) {
-  const wipeOpacity = useTransform(progress, [0.7, 0.76, 0.84, 0.88], [0, 1, 1, 0]);
+  const wipeOpacity = useTransform(progress, [0.68, 0.74, 0.84, 0.88], [0, 1, 1, 0]);
   const freshOpacity = useTransform(progress, [0.88, 0.94], [0, 1]);
   const freshY = useTransform(progress, [0.88, 0.96], ["-40vh", "0vh"]);
   const freshRotate = useTransform(progress, [0.88, 0.96], [-10, -2]);
@@ -204,7 +251,8 @@ export default function BoardScene() {
           className="text-center mb-14"
           style={{ fontSize: "var(--step-1)", color: "var(--text-secondary)" }}
         >
-          Every Monday at midnight, the board wipes clean.
+          Every Monday at midnight, the board wipes clean. When the clock&apos;s
+          almost out, the countdown turns red.
         </p>
         <div className="flex flex-wrap justify-center gap-5 max-w-5xl mx-auto">
           <PromptCard prompt="What's the most unhinged thing in your notes app right now?" />
@@ -232,6 +280,7 @@ export default function BoardScene() {
         {POSTS.map((post, i) => (
           <SceneCard key={post.title} post={post} index={i} progress={scrollYProgress} />
         ))}
+        <Countdown progress={scrollYProgress} />
         <WipeCopy progress={scrollYProgress} />
       </div>
     </section>

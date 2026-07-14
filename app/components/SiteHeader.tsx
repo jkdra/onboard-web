@@ -1,26 +1,11 @@
 import Link from "next/link";
+import HoverLogo from "@/app/components/HoverLogo";
 
 export default function SiteHeader() {
   return (
     <header className="flex items-center justify-between px-6 md:px-10 py-6">
       <Link href="/" aria-label="On Board home">
-        <span
-          aria-hidden
-          className="block"
-          style={{
-            width: 36,
-            height: 36,
-            background: "var(--text)",
-            WebkitMaskImage: "url(/logo.svg)",
-            maskImage: "url(/logo.svg)",
-            WebkitMaskSize: "contain",
-            maskSize: "contain",
-            WebkitMaskRepeat: "no-repeat",
-            maskRepeat: "no-repeat",
-            WebkitMaskPosition: "center",
-            maskPosition: "center",
-          }}
-        />
+        <HoverLogo size={36} />
       </Link>
       <Link
         href="/changelog"

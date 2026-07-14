@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import HoverLogo from "@/app/components/HoverLogo";
 
 export default function Hero() {
   const [email, setEmail] = useState("");
@@ -104,21 +105,10 @@ export default function Hero() {
       </div>
 
       {/* The little guy peeking out of the corner, fading into the next section. */}
-      <span
-        aria-hidden
-        className="absolute -right-14 -bottom-12 md:-right-20 md:-bottom-16 opacity-10 pointer-events-none"
-        style={{
-          width: "clamp(180px, 24vw, 340px)",
-          height: "clamp(180px, 24vw, 340px)",
-          background: "var(--text)",
-          WebkitMaskImage: "url(/logo.svg)",
-          maskImage: "url(/logo.svg)",
-          WebkitMaskSize: "contain",
-          maskSize: "contain",
-          WebkitMaskRepeat: "no-repeat",
-          maskRepeat: "no-repeat",
-          transform: "rotate(-14deg)",
-        }}
+      <HoverLogo
+        size="clamp(220px, 30vw, 420px)"
+        className="absolute -right-8 -bottom-6 md:-right-10 md:-bottom-8 opacity-20 hover:opacity-35 transition-opacity"
+        style={{ transform: "rotate(-14deg)" }}
       />
       <div
         aria-hidden
