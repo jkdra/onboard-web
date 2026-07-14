@@ -9,10 +9,10 @@ const siteDescription =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://onboardapp.org"),
-  title: "On Board",
+  title: "On Board – Your Community Board",
   description: siteDescription,
   openGraph: {
-    title: "On Board",
+    title: "On Board – Your Community Board",
     description: siteDescription,
     url: "https://onboardapp.org",
     siteName: "On Board",
