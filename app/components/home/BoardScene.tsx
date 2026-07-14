@@ -20,7 +20,7 @@ const POSTS: ScenePost[] = [
     tags: ["#music"],
     reactions: [{ icon: "❤️", count: 89 }, { icon: "💀", count: 12 }],
     timestamp: "now",
-    rotate: -4, x: "-28%", y: "-22%",
+    rotate: -4, x: "-24vw", y: "-24vh",
   },
   {
     color: "orange",
@@ -29,7 +29,7 @@ const POSTS: ScenePost[] = [
     tags: ["#cs241"],
     reactions: [{ icon: "❤️", count: 40 }, { icon: "👥", count: 21 }],
     timestamp: "now",
-    rotate: 3, x: "26%", y: "-26%",
+    rotate: 3, x: "22vw", y: "-28vh",
   },
   {
     color: "blue",
@@ -38,7 +38,7 @@ const POSTS: ScenePost[] = [
     tags: ["#forsale", "#math239"],
     reactions: [{ icon: "❤️", count: 15 }],
     timestamp: "now",
-    rotate: -2, x: "-30%", y: "24%",
+    rotate: -2, x: "-26vw", y: "24vh",
   },
   {
     color: "pink",
@@ -47,7 +47,7 @@ const POSTS: ScenePost[] = [
     tags: ["#lost"],
     reactions: [{ icon: "❤️", count: 22 }, { icon: "💀", count: 7 }],
     timestamp: "now",
-    rotate: 5, x: "28%", y: "22%",
+    rotate: 5, x: "24vw", y: "26vh",
   },
   {
     color: "blue",
@@ -56,7 +56,7 @@ const POSTS: ScenePost[] = [
     tags: ["#campus-life", "#funny"],
     reactions: [{ icon: "💀", count: 52 }],
     timestamp: "now",
-    rotate: -6, x: "0%", y: "-34%",
+    rotate: -6, x: "-1vw", y: "-2vh",
   },
   {
     color: "green",
@@ -65,7 +65,7 @@ const POSTS: ScenePost[] = [
     tags: ["#bio"],
     reactions: [{ icon: "❤️", count: 31 }, { icon: "👥", count: 12 }],
     timestamp: "now",
-    rotate: 2, x: "2%", y: "32%",
+    rotate: 2, x: "1vw", y: "30vh",
   },
 ];
 
@@ -250,13 +250,18 @@ export default function BoardScene() {
           Every Monday at midnight, the board wipes clean.
         </p>
         <div className="flex flex-wrap justify-center gap-5 max-w-5xl mx-auto">
-          {POSTS.map(({ rotate, x, y, ...card }) => (
-            <BoardCard
-              key={card.title}
-              {...card}
-              style={{ transform: `rotate(${rotate}deg)` }}
-            />
-          ))}
+          {POSTS.map((post) => {
+            const { rotate, x: unusedX, y: unusedY, ...card } = post;
+            void unusedX;
+            void unusedY;
+            return (
+              <BoardCard
+                key={card.title}
+                {...card}
+                style={{ transform: `rotate(${rotate}deg)` }}
+              />
+            );
+          })}
         </div>
       </section>
     );
