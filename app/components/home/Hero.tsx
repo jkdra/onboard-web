@@ -33,7 +33,7 @@ export default function Hero() {
           className="rise-in inline-block text-sm font-semibold px-4 py-1.5 rounded-full mb-10"
           style={{ background: "var(--text)", color: "var(--bg)", "--d": "0.05s" } as React.CSSProperties}
         >
-          Coming to IVC · Fall 2026
+          Closed Beta · IVC
         </span>
         <h1
           className="font-extrabold tracking-tight mb-8"
@@ -90,7 +90,7 @@ export default function Hero() {
             </>
           ) : (
             <p className="font-medium text-base">
-              You&apos;re on the list. We&apos;ll reach out before launch.
+              You&apos;re on the list. We&apos;ll reach out as open beta and launch roll out.
             </p>
           )}
         </div>
