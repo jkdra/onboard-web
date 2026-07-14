@@ -43,10 +43,12 @@ export default function Footer() {
       className="py-12 text-center text-sm flex flex-col items-center gap-6"
       style={{ borderTop: "1px solid var(--border)", color: "var(--text-secondary)" }}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-wrap justify-center">
         <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
         <span className="opacity-30">·</span>
         <Link href="/terms" className="hover:underline">Terms of Service</Link>
+        <span className="opacity-30">·</span>
+        <Link href="/contact" className="hover:underline">Contact</Link>
       </div>
 
       {theme !== null && (
