@@ -207,7 +207,7 @@ function AmbientCountdown({ progress }: { progress: MotionValue<number> }) {
   // rip, then slowly fades back to var(--text) as the page returns to normal.
   const darkOpacity = useTransform(
     progress,
-    [0.618, 0.62, 0.72, 0.80],
+    [0.62, 0.621, 0.72, 0.80],
     [0, 1, 1, 0]
   );
 
@@ -247,7 +247,7 @@ export const redTakeoverStore = {
 function RedTakeover({ progress }: { progress: MotionValue<number> }) {
   const opacity = useTransform(
     progress,
-    [0.618, 0.62, 0.72, 0.82],
+    [0.62, 0.621, 0.72, 0.82],
     [0, 1, 1, 0]
   );
   useMotionValueEvent(opacity, "change", (latest) => redTakeoverStore.set(latest));
@@ -273,7 +273,7 @@ function CardGrid({
 }) {
   const brightness = useTransform(
     progress,
-    [0.618, 0.62, 0.72, 0.80],
+    [0.62, 0.621, 0.72, 0.80],
     [1, 0, 0, 1]
   );
   const filter = useTransform(brightness, (b) => `brightness(${b})`);
@@ -397,7 +397,7 @@ export default function BoardScene() {
 
   return (
     <section ref={ref} style={{ height: "300vh" }} aria-label="How On Board works">
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center px-5 sm:px-6 md:px-12">
+      <div className="sticky top-0 h-[100svh] overflow-hidden flex items-center px-5 sm:px-6 md:px-12">
         <RedTakeover progress={scrollYProgress} />
         <AmbientCountdown progress={scrollYProgress} />
         <CardGrid
