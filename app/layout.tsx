@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SiteHeader from "@/app/components/SiteHeader";
 import "./globals.css";
 
 const siteDescription =
@@ -51,7 +52,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }
