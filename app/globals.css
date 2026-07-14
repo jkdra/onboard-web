@@ -178,6 +178,22 @@ html {
   opacity: 0.18;
 }
 
+/* Board cards drift gently while the scene is held — different phase per card. */
+@keyframes card-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.card-float {
+  animation: card-float 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
 /* Scroll reveal — CSS scroll-driven where supported, visible otherwise. */
 @supports (animation-timeline: view()) {
   @keyframes reveal-up {
@@ -207,6 +223,9 @@ html {
     animation: none;
   }
   .scroll-reveal {
+    animation: none;
+  }
+  .card-float {
     animation: none;
   }
 }

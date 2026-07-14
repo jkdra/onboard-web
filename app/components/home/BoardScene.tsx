@@ -18,8 +18,8 @@ type ScenePost = BoardCardProps & { rotate: number; column: 0 | 1 };
 const POSTS: ScenePost[] = [
   {
     color: "teal",
-    title: "the squirrels are getting too brave",
-    body: "one made direct eye contact w me while i ate a granola bar. i felt threatened.",
+    title: "the squirrels are getting bold",
+    body: "one made direct eye contact while i ate a granola bar. i think it wanted the bar. i let it win. i live here now, it lives here too.",
     tags: ["#campus-life"],
     reactions: { laugh: 52, like: 18, hug: 2 },
     timestamp: "now",
@@ -27,8 +27,8 @@ const POSTS: ScenePost[] = [
   },
   {
     color: "indigo",
-    title: "who took my oat milk from the 3rd floor fridge",
-    body: "it had my name on it. in two places. i will find you.",
+    title: "who took my oat milk",
+    body: "it had my name on it. in two places. i memorized the hum of the 3rd floor fridge. i will find you and i will be so normal about it.",
     tags: ["#dorm-life"],
     reactions: { laugh: 44, like: 12, dislike: 3 },
     timestamp: "now",
@@ -36,8 +36,8 @@ const POSTS: ScenePost[] = [
   },
   {
     color: "orange",
-    title: "prof said 'this won't be on the exam' and it was the exam",
-    body: "question 1 through question 6. i counted.",
+    title: "he said it wouldn't be on the exam",
+    body: "question 1 through question 6. i counted them twice. i have never felt so personally attacked by a scantron in my entire life.",
     tags: ["#academics"],
     reactions: { like: 61, laugh: 38, hug: 9 },
     timestamp: "now",
@@ -45,8 +45,8 @@ const POSTS: ScenePost[] = [
   },
   {
     color: "pink",
-    title: "free couch on 4th & elm, first come first serve",
-    body: "structurally questionable but spiritually strong.",
+    title: "free couch, 4th & elm",
+    body: "structurally questionable but spiritually strong. bring three friends and a strong back. smells mostly fine. first come, first served.",
     tags: ["#free-stuff"],
     reactions: { like: 27, laugh: 15, dislike: 1 },
     timestamp: "now",
@@ -92,14 +92,16 @@ function SceneCard({
   void column;
   return (
     <motion.div style={{ opacity, y, rotate }}>
-      <BoardCard {...cardProps} className="shadow-lg" />
+      <div className="card-float" style={{ animationDelay: `${index * 0.8}s` }}>
+        <BoardCard {...cardProps} className="shadow-xl" />
+      </div>
     </motion.div>
   );
 }
 
 function Narration({ progress }: { progress: MotionValue<number> }) {
   return (
-    <div className="relative w-full h-16 sm:h-20 md:h-40">
+    <div className="relative w-full h-16 sm:h-24 md:h-36">
       {NARRATION.map(([from, to, text]) => (
         <NarrationLine key={text} from={from} to={to} text={text} progress={progress} />
       ))}
@@ -271,8 +273,22 @@ export default function BoardScene() {
   return (
     <section ref={ref} style={{ height: "300vh" }} aria-label="How On Board works">
       <div className="sticky top-0 h-screen overflow-hidden flex items-center px-5 sm:px-6 md:px-12">
-        <div className="w-full max-w-5xl mx-auto grid gap-3 sm:gap-5 md:gap-12 md:grid-cols-2 items-center">
-          <Narration progress={scrollYProgress} />
+        <div className="w-full max-w-5xl mx-auto grid gap-4 sm:gap-6 md:gap-10 md:grid-cols-[0.85fr_1.15fr] items-center">
+          <div>
+            <p
+              className="text-xs font-bold uppercase tracking-[0.2em] mb-3 md:mb-5"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              How the board works
+            </p>
+            <Narration progress={scrollYProgress} />
+            <p
+              className="mt-3 md:mt-5 max-w-xs"
+              style={{ fontSize: "var(--step-0)", color: "var(--text-secondary)" }}
+            >
+              One week, one board. Then it all wipes and everyone starts fresh.
+            </p>
+          </div>
           <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-6">
             <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6">
               {leftColumn.map((post) => (
@@ -284,7 +300,7 @@ export default function BoardScene() {
                 />
               ))}
             </div>
-            <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-16">
+            <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-12">
               {rightColumn.map((post) => (
                 <SceneCard
                   key={post.title}
