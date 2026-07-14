@@ -6,6 +6,7 @@ import {
   useScroll,
   useTransform,
   useReducedMotion,
+  useMotionValueEvent,
   MotionValue,
 } from "motion/react";
 import BoardCard, { BoardCardProps } from "@/app/components/home/BoardCard";
@@ -61,10 +62,8 @@ const NARRATION: [number, number, string][] = [
   [0.32, 0.48, "React, reply, repeat."],
 ];
 
-// Countdown ticks from ~2.5hrs to 0 across this scroll window, turning red
-// once under 90 minutes remain — the "clears soon" urgency moment.
+// Countdown ticks from ~2.5hrs to 0 across this scroll window.
 const COUNTDOWN_START_SECONDS = 8954;
-const COUNTDOWN_RED_THRESHOLD = 5400;
 
 function SceneCard({
   post,
@@ -77,15 +76,15 @@ function SceneCard({
 }) {
   const start = index * 0.09;
   const end = start + 0.14;
-  // Rise into its masonry slot, settle, fade out on the wipe. No longer
-  // scattered across the viewport — position comes from the grid it sits in.
-  const opacity = useTransform(progress, [start, end, 0.65, 0.72], [0, 1, 1, 0]);
-  const y = useTransform(progress, [start, end], [40, 0]);
-  const rotate = useTransform(
-    progress,
-    [start, end, 0.65, 0.72],
-    [post.rotate * 4, post.rotate, post.rotate, post.rotate * 4]
-  );
+  // Rise into its masonry slot, settle, then rip straight down on the wipe.
+  // Each card exits with a slight stagger — bottom cards first so they
+  // don't overlap as they rip downward.
+  const exitStart = 0.63 + (POSTS.length - 1 - index) * 0.012;
+  const exitEnd = exitStart + 0.06;
+  const opacity = useTransform(progress, [start, end, exitStart, exitEnd], [0, 1, 1, 0]);
+  const y = useTransform(progress, [start, end, exitStart, exitEnd], [40, 0, 0, 200]);
+  // Rotate only on entry — no spin on exit, cards rip straight down.
+  const rotate = useTransform(progress, [start, end], [post.rotate * 2, post.rotate]);
 
   const { rotate: baseRotate, column, ...cardProps } = post;
   void baseRotate;
@@ -140,56 +139,182 @@ function NarrationLine({
   );
 }
 
-function Countdown({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0.48, 0.52, 0.6, 0.64], [0, 1, 1, 0]);
-  const scale = useTransform(progress, [0.48, 0.54], [0.7, 1]);
-  const seconds = useTransform(progress, [0.52, 0.64], [COUNTDOWN_START_SECONDS, 0]);
-  const label = useTransform(seconds, (s) => {
-    const v = Math.max(0, Math.round(s));
-    const h = String(Math.floor(v / 3600)).padStart(2, "0");
-    const m = String(Math.floor((v % 3600) / 60)).padStart(2, "0");
-    const sec = String(v % 60).padStart(2, "0");
-    return `${h}h ${m}m ${sec}s`;
-  });
-  const bg = useTransform(seconds, (s) =>
-    s <= COUNTDOWN_RED_THRESHOLD ? "#e5484d" : "var(--card)"
-  );
-  const border = useTransform(seconds, (s) =>
-    s <= COUNTDOWN_RED_THRESHOLD ? "#e5484d" : "var(--border)"
-  );
-  const fg = useTransform(seconds, (s) => (s <= COUNTDOWN_RED_THRESHOLD ? "#ffffff" : "var(--text)"));
-  const fgSecondary = useTransform(seconds, (s) =>
-    s <= COUNTDOWN_RED_THRESHOLD ? "rgba(255,255,255,0.75)" : "var(--text-secondary)"
-  );
+const RED = "#ff2b2b";
+const pad = (n: number) => String(n).padStart(2, "0");
 
+function Segment({
+  value,
+  unit,
+}: {
+  value: MotionValue<string>;
+  unit: string;
+}) {
+  return (
+    <span className="inline-flex items-baseline">
+      <motion.span>{value}</motion.span>
+      <span className="text-[0.34em] font-bold ml-[0.04em] mr-[0.12em] opacity-50">
+        {unit}
+      </span>
+    </span>
+  );
+}
+
+function CounterRow({
+  h,
+  m,
+  s,
+  color,
+}: {
+  h: MotionValue<string>;
+  m: MotionValue<string>;
+  s: MotionValue<string>;
+  color: string;
+}) {
   return (
     <div
-      className="absolute left-1/2 md:left-[27%] top-1/2 -translate-x-1/2 -translate-y-1/2 px-4"
-      style={{ zIndex: 10 }}
+      className="flex flex-col md:flex-row items-start md:items-baseline font-extrabold tabular-nums leading-[0.85] tracking-tighter whitespace-nowrap text-[34vw] md:text-[clamp(6rem,15vw,15rem)]"
+      style={{ color }}
     >
-      <motion.div
-        className="rounded-3xl px-8 py-6 text-center shadow-xl"
-        style={{ opacity, scale, background: bg, border: "1px solid", borderColor: border, color: fg }}
-      >
-        <motion.p
-          className="text-xs font-bold uppercase tracking-widest mb-2"
-          style={{ color: fgSecondary }}
-        >
-          Clears soon
-        </motion.p>
-        <motion.p className="font-extrabold tabular-nums" style={{ fontSize: "var(--step-3)" }}>
-          {label}
-        </motion.p>
-      </motion.div>
+      <Segment value={h} unit="h" />
+      <Segment value={m} unit="m" />
+      <Segment value={s} unit="s" />
     </div>
   );
 }
 
+// The countdown — anchored in the bottom-leading corner, still behind the
+// cards (z-0). Oversized for drama, tucked in the corner so it doesn't
+// overpower the board. At zero it goes black on a red page, then slowly
+// returns to normal.
+function AmbientCountdown({ progress }: { progress: MotionValue<number> }) {
+  const seconds = useTransform(progress, [0.04, 0.62], [COUNTDOWN_START_SECONDS, 0], {
+    clamp: true,
+  });
+  const h = useTransform(seconds, (s) => pad(Math.floor(Math.max(0, Math.round(s)) / 3600)));
+  const m = useTransform(seconds, (s) =>
+    pad(Math.floor((Math.max(0, Math.round(s)) % 3600) / 60))
+  );
+  const sec = useTransform(seconds, (s) => pad(Math.max(0, Math.round(s)) % 60));
+
+  // Starts subtle, grows as time runs out, bumps at zero, then fades
+  // once the wipe copy takes over.
+  const presence = useTransform(
+    progress,
+    [0.04, 0.30, 0.60, 0.62, 0.76, 0.82],
+    [0.06, 0.12, 0.20, 0.30, 0.30, 0]
+  );
+  // At zero the timer goes black (on the red page). Holds through the card
+  // rip, then slowly fades back to var(--text) as the page returns to normal.
+  const darkOpacity = useTransform(
+    progress,
+    [0.618, 0.62, 0.72, 0.80],
+    [0, 1, 1, 0]
+  );
+
+  return (
+    <motion.div
+      aria-hidden
+      className="absolute inset-0 z-0 flex items-end justify-start overflow-hidden pointer-events-none select-none px-5 pb-6 sm:px-6 sm:pb-8 md:px-12 md:pb-10"
+      style={{ opacity: presence }}
+    >
+      <div className="relative">
+        <CounterRow h={h} m={m} s={sec} color="var(--text)" />
+        <motion.div className="absolute inset-0" style={{ opacity: darkOpacity }}>
+          <CounterRow h={h} m={m} s={sec} color="#000000" />
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+export const redTakeoverStore = {
+  value: 0,
+  listeners: new Set<() => void>(),
+  set(v: number) {
+    if (this.value !== v) {
+      this.value = v;
+      this.listeners.forEach((l) => l());
+    }
+  },
+  subscribe(l: () => void) {
+    this.listeners.add(l);
+    return () => this.listeners.delete(l);
+  },
+};
+
+// Full-page red takeover — the entire viewport SNAPS to red the instant the
+// timer hits zero, then SLOWLY fades back to the regular background color.
+function RedTakeover({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(
+    progress,
+    [0.618, 0.62, 0.72, 0.82],
+    [0, 1, 1, 0]
+  );
+  useMotionValueEvent(opacity, "change", (latest) => redTakeoverStore.set(latest));
+  return (
+    <motion.div
+      aria-hidden
+      className="absolute inset-0 z-0 pointer-events-none"
+      style={{ opacity, background: RED }}
+    />
+  );
+}
+
+// Card grid with narration — during the red takeover, brightness drops to 0
+// so cards and text become black silhouettes, then slowly restores.
+function CardGrid({
+  leftColumn,
+  rightColumn,
+  progress,
+}: {
+  leftColumn: ScenePost[];
+  rightColumn: ScenePost[];
+  progress: MotionValue<number>;
+}) {
+  const brightness = useTransform(
+    progress,
+    [0.618, 0.62, 0.72, 0.80],
+    [1, 0, 0, 1]
+  );
+  const filter = useTransform(brightness, (b) => `brightness(${b})`);
+
+  return (
+    <motion.div
+      className="relative z-10 w-full max-w-5xl mx-auto grid gap-4 sm:gap-6 md:gap-10 md:grid-cols-[0.85fr_1.15fr] items-center pb-8 md:pb-0"
+      style={{ filter }}
+    >
+      <Narration progress={progress} />
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-6">
+        <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6">
+          {leftColumn.map((post) => (
+            <SceneCard
+              key={post.title}
+              post={post}
+              index={POSTS.indexOf(post)}
+              progress={progress}
+            />
+          ))}
+        </div>
+        <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-12">
+          {rightColumn.map((post) => (
+            <SceneCard
+              key={post.title}
+              post={post}
+              index={POSTS.indexOf(post)}
+              progress={progress}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function WipeCopy({ progress }: { progress: MotionValue<number> }) {
-  const wipeOpacity = useTransform(progress, [0.68, 0.74, 0.84, 0.88], [0, 1, 1, 0]);
-  const freshOpacity = useTransform(progress, [0.88, 0.94], [0, 1]);
-  const freshY = useTransform(progress, [0.88, 0.96], ["-40vh", "0vh"]);
-  const freshRotate = useTransform(progress, [0.88, 0.96], [-10, -2]);
+  const wipeOpacity = useTransform(progress, [0.78, 0.84, 0.90, 0.94], [0, 1, 1, 0]);
+  const freshOpacity = useTransform(progress, [0.93, 0.98], [0, 1]);
+  const freshY = useTransform(progress, [0.93, 0.99], ["40vh", "0vh"]);
+  const freshRotate = useTransform(progress, [0.93, 0.99], [10, -2]);
 
   return (
     <>
@@ -273,46 +398,13 @@ export default function BoardScene() {
   return (
     <section ref={ref} style={{ height: "300vh" }} aria-label="How On Board works">
       <div className="sticky top-0 h-screen overflow-hidden flex items-center px-5 sm:px-6 md:px-12">
-        <div className="w-full max-w-5xl mx-auto grid gap-4 sm:gap-6 md:gap-10 md:grid-cols-[0.85fr_1.15fr] items-center">
-          <div>
-            <p
-              className="text-xs font-bold uppercase tracking-[0.2em] mb-3 md:mb-5"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              How the board works
-            </p>
-            <Narration progress={scrollYProgress} />
-            <p
-              className="mt-3 md:mt-5 max-w-xs"
-              style={{ fontSize: "var(--step-0)", color: "var(--text-secondary)" }}
-            >
-              One week, one board. Then it all wipes and everyone starts fresh.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-6">
-            <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6">
-              {leftColumn.map((post) => (
-                <SceneCard
-                  key={post.title}
-                  post={post}
-                  index={POSTS.indexOf(post)}
-                  progress={scrollYProgress}
-                />
-              ))}
-            </div>
-            <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-12">
-              {rightColumn.map((post) => (
-                <SceneCard
-                  key={post.title}
-                  post={post}
-                  index={POSTS.indexOf(post)}
-                  progress={scrollYProgress}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-        <Countdown progress={scrollYProgress} />
+        <RedTakeover progress={scrollYProgress} />
+        <AmbientCountdown progress={scrollYProgress} />
+        <CardGrid
+          leftColumn={leftColumn}
+          rightColumn={rightColumn}
+          progress={scrollYProgress}
+        />
         <WipeCopy progress={scrollYProgress} />
       </div>
     </section>

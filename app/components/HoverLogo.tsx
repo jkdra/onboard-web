@@ -7,10 +7,12 @@ export default function HoverLogo({
   size,
   className,
   style,
+  color,
 }: {
   size: number | string;
   className?: string;
   style?: React.CSSProperties;
+  color?: string;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -28,7 +30,7 @@ export default function HoverLogo({
           display: "block",
           width: "100%",
           height: "100%",
-          background: "var(--text)",
+          background: color || "var(--text)",
           WebkitMaskImage: `url(${hovered ? "/logo-happy.svg" : "/logo.svg"})`,
           maskImage: `url(${hovered ? "/logo-happy.svg" : "/logo.svg"})`,
           WebkitMaskSize: "contain",

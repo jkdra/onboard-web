@@ -1,13 +1,4 @@
-const LINES = [
-  "Post",
-  "React",
-  "Comment",
-  "Repeat",
-  "Clears Monday",
-  "Students only",
-  "One board",
-  "Whole campus",
-];
+const LINES = ["Share", "React", "Clear", "Repeat"];
 
 function Row() {
   return (

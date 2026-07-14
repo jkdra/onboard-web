@@ -75,11 +75,11 @@ export default function BoardCard({
         />
       </div>
       {tags && tags.length > 0 && (
-        <div className="shrink-0 hidden sm:flex flex-wrap gap-1.5 mb-3">
+        <div className="shrink-0 flex flex-wrap gap-1.5 mb-2 sm:mb-3">
           {tags.slice(0, 2).map((t) => (
             <span
               key={t}
-              className="text-xs font-semibold px-2.5 py-1 rounded-full"
+              className="text-[10px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full"
               style={{ background: "rgba(127, 127, 127, 0.18)" }}
             >
               {t}
