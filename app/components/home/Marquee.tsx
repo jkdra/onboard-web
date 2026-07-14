@@ -13,13 +13,21 @@ function Row() {
   return (
     <div className="flex items-center shrink-0">
       {LINES.map((line) => (
-        <span
-          key={line}
-          className="text-ghost font-extrabold whitespace-nowrap px-6"
-          style={{ fontSize: "var(--step-3)" }}
-        >
-          {line} <span aria-hidden>✳</span>
-        </span>
+        <div key={line} className="flex items-center shrink-0">
+          <span
+            className="text-ghost font-extrabold whitespace-nowrap px-6"
+            style={{ fontSize: "var(--step-3)" }}
+          >
+            {line}
+          </span>
+          <span
+            aria-hidden
+            className="text-ghost font-extrabold leading-none"
+            style={{ fontSize: "var(--step-3)" }}
+          >
+            ＊
+          </span>
+        </div>
       ))}
     </div>
   );

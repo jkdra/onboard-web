@@ -62,9 +62,9 @@ const NARRATION: [number, number, string][] = [
 ];
 
 // Countdown ticks from ~2.5hrs to 0 across this scroll window, turning red
-// once under 10 minutes remain — the "clears soon" urgency moment.
+// once under 90 minutes remain — the "clears soon" urgency moment.
 const COUNTDOWN_START_SECONDS = 8954;
-const COUNTDOWN_RED_THRESHOLD = 600;
+const COUNTDOWN_RED_THRESHOLD = 5400;
 
 function SceneCard({
   post,
@@ -162,7 +162,7 @@ function Countdown({ progress }: { progress: MotionValue<number> }) {
 
   return (
     <div
-      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-4"
+      className="absolute left-1/2 md:left-[27%] top-1/2 -translate-x-1/2 -translate-y-1/2 px-4"
       style={{ zIndex: 10 }}
     >
       <motion.div
