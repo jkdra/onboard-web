@@ -1,6 +1,6 @@
 # "The Board Is the Website" Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Redesign the On Board marketing site into a monochrome, oversized-type, scrollytelling experience where colorful post cards are the only color.
 
@@ -29,13 +29,13 @@
 
 ### Task 1: Type scale + global CSS foundation
 **Files:** Modify `app/globals.css`
-- [ ] Add `--step-0…5`, pastel card variables (light + dark), marquee keyframes (`@keyframes marquee { to { transform: translateX(-50%) } }`, paused/static under reduced motion), scroll-reveal utility using `animation-timeline: view()` wrapped in `@supports`, hero stagger keyframes.
-- [ ] `npx tsc --noEmit` passes; commit.
+- [x] Add `--step-0…5`, pastel card variables (light + dark), marquee keyframes (`@keyframes marquee { to { transform: translateX(-50%) } }`, paused/static under reduced motion), scroll-reveal utility using `animation-timeline: view()` wrapped in `@supports`, hero stagger keyframes.
+- [x] `npx tsc --noEmit` passes; commit.
 
 ### Task 2: Shell — SiteHeader + FooterFinale
 **Files:** Create `app/components/SiteHeader.tsx`, `app/components/FooterFinale.tsx`; Modify `app/components/Footer.tsx` (restyle only, keep theme logic), `app/layout.tsx` (render SiteHeader above children).
 **Interfaces:** `SiteHeader` (server, no props): masked logo → `/`, right-side `/changelog` link. `FooterFinale` (no props): viewport-width masked wordmark (logo + "On Board" text at `--step-5`), then renders existing `<Footer />`.
-- [ ] Build components; verify in browser both themes; commit.
+- [x] Build components; verify in browser both themes; commit.
 
 ### Task 3: BoardCard
 **Files:** Create `app/components/home/BoardCard.tsx`
@@ -49,13 +49,13 @@ type BoardCardProps = {
 };
 ```
 Rounded-2xl pastel card matching iOS app style: bold title, secondary body, pill tags, reaction row with dot separators + timestamp.
-- [ ] Implement; render a temp test row on `/` to eyeball vs screenshots; remove temp; commit.
+- [x] Implement; render a temp test row on `/` to eyeball vs screenshots; remove temp; commit.
 
 ### Task 4: Hero + Marquee
 **Files:** Create `app/components/home/Hero.tsx` (client — owns waitlist form state, logic copied verbatim from current `page.tsx`), `app/components/home/Marquee.tsx` (server).
 - Hero: full-viewport, logo mark, badge "Coming to IVC · Fall 2026", h1 "Let's get you On Board." at `--step-5`, subline, form, scroll cue; line-stagger reveal via CSS.
 - Marquee: duplicated content list (aria-hidden second copy) of ~8 post one-liners in ghost outlined text (`-webkit-text-stroke`), pause on hover.
-- [ ] Implement both; browser-verify mobile + desktop + reduced motion; commit.
+- [x] Implement both; browser-verify mobile + desktop + reduced motion; commit.
 
 ### Task 5: BoardScene (scrollytelling)
 **Files:** Create `app/components/home/BoardScene.tsx` (client); add dep: `/usr/bin/env npm install motion`.
@@ -65,23 +65,23 @@ Rounded-2xl pastel card matching iOS app style: bold title, secondary body, pill
 - 0.65–0.8: the wipe — all cards translate off with fade; copy "Monday, 12:00 AM. Clean slate."
 - 0.8–1: fresh green card drops in: "Fresh week. Who's first?"
 - Reduced motion (`useReducedMotion`): render static populated grid + all copy, no sticky theater.
-- [ ] Implement; browser-verify scroll choreography + reduced motion; commit.
+- [x] Implement; browser-verify scroll choreography + reduced motion; commit.
 
 ### Task 6: Manifesto
 **Files:** Create `app/components/home/Manifesto.tsx` (server).
 Four statements (from existing features), numbered 01–04, `--step-3/4` type, hairline top rules, scroll-reveal class from Task 1.
-- [ ] Implement; verify; commit.
+- [x] Implement; verify; commit.
 
 ### Task 7: Screenshots section (stand-in) + page composition
 **Files:** Create `app/components/home/Screenshots.tsx`; Rework `app/page.tsx` to compose Hero → Marquee → BoardScene → Manifesto → Screenshots → FooterFinale; delete `app/components/FeatureCard.tsx` and old page body.
 - Screenshots: checks a hardcoded manifest of `/screenshots/*.png`; if images exist use them in monochrome phone frames with differential parallax (light `motion` transforms); until then renders 3 phone frames filled with BoardCards. Swapping = drop PNGs + flip manifest.
-- [ ] Compose; full-page browser pass (both themes, 375px + desktop, waitlist submit against Supabase); commit.
+- [x] Compose; full-page browser pass (both themes, 375px + desktop, waitlist submit against Supabase); commit.
 
 ### Task 8: Subpages + view transitions
 **Files:** Modify `app/changelog/page.tsx`, `app/privacy/page.tsx`, `app/terms/page.tsx` (new type scale, oversized titles, SiteHeader/FooterFinale shell, keep all content/logic); Create/modify `next.config.ts` (`experimental: { viewTransition: true }`); wrap page content in React `<ViewTransition>` in `app/layout.tsx`.
-- [ ] Implement; verify navigation cross-fade + subpage rendering; commit.
+- [x] Implement; verify navigation cross-fade + subpage rendering; commit.
 
 ### Task 9: Final verification
-- [ ] `npx tsc --noEmit` clean; `/usr/bin/env npm run build` succeeds.
-- [ ] Browser workflow: console clean, network clean, screenshot proof light+dark, mobile+desktop, reduced-motion pass.
-- [ ] Update this plan's checkboxes; commit.
+- [x] `npx tsc --noEmit` clean; `/usr/bin/env npm run build` succeeds.
+- [x] Browser workflow: console clean, network clean, screenshot proof light+dark, mobile+desktop, reduced-motion pass.
+- [x] Update this plan's checkboxes; commit.

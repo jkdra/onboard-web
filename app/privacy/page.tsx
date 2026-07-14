@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "@/app/components/Footer";
+import FooterFinale from "@/app/components/FooterFinale";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — On Board",
@@ -19,11 +19,11 @@ export default function PrivacyPage() {
             ← Back
           </Link>
 
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+          <h1 className="font-extrabold tracking-tight mb-2" style={{ fontSize: "var(--step-4)", lineHeight: 1 }}>
             Privacy Policy
           </h1>
           <p className="text-sm mb-10" style={{ color: "var(--text-secondary)" }}>
-            Last updated: July 2, 2026
+            Last updated: July 14, 2026
           </p>
 
           <div className="space-y-8 text-[15px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>
@@ -36,16 +36,19 @@ export default function PrivacyPage() {
             <Section title="Information we collect">
               <ul>
                 <li>
-                  <strong>Account information.</strong> Your campus email
-                  address, used to verify that you are a student at a supported
-                  school. Sign-in is handled via a magic link — no password
-                  required.
+                  <strong>Account information.</strong> Your name, birthday,
+                  campus email address, and phone number. Your campus email is
+                  used to verify that you are a currently enrolled student at
+                  a supported school; sign-in is handled via a magic link — no
+                  password required. Your birthday is used to confirm you meet
+                  our minimum age requirement.
                 </li>
                 <li>
-                  <strong>Content you create.</strong> Posts, comments, and
-                  reactions you submit to the board. Posts are anonymous to
-                  other users by default; your email is only visible if another
-                  user views your profile.
+                  <strong>Content you create.</strong> Posts, comments,
+                  reactions, and any photos or videos you upload, all used to
+                  power the board&apos;s core functionality. Posts are
+                  anonymous to other users by default; your email is only
+                  visible if another user views your profile.
                 </li>
                 <li>
                   <strong>Device token.</strong> If you grant notification
@@ -161,8 +164,9 @@ export default function PrivacyPage() {
 
             <Section title="Children">
               <p>
-                On Board is intended for college students aged 18 and older. We
-                do not knowingly collect information from anyone under 18.
+                On Board is intended for verified college students aged 16 and
+                older. We do not knowingly collect information from anyone
+                under 16.
               </p>
             </Section>
 
@@ -176,14 +180,22 @@ export default function PrivacyPage() {
 
             <Section title="Contact">
               <p>
-                Questions? Use the contact form on our website.
+                Questions about this policy or your data? Email us at{" "}
+                <a href="mailto:support@onboardapp.org" className="font-semibold hover:underline" style={{ color: "var(--text)" }}>
+                  support@onboardapp.org
+                </a>{" "}
+                or visit our{" "}
+                <Link href="/contact" className="font-semibold hover:underline" style={{ color: "var(--text)" }}>
+                  Contact page
+                </Link>
+                .
               </p>
             </Section>
           </div>
         </div>
       </main>
 
-      <Footer />
+      <FooterFinale />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "@/app/components/Footer";
+import FooterFinale from "@/app/components/FooterFinale";
 
 export const metadata: Metadata = {
   title: "Terms of Service — On Board",
@@ -19,14 +19,14 @@ export default function TermsPage() {
             ← Back
           </Link>
 
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+          <h1 className="font-extrabold tracking-tight mb-2" style={{ fontSize: "var(--step-4)", lineHeight: 1 }}>
             Terms of Service
           </h1>
           <p
             className="text-sm mb-10"
             style={{ color: "var(--text-secondary)" }}
           >
-            Last updated: July 2, 2026
+            Last updated: July 14, 2026
           </p>
 
           <div
@@ -40,9 +40,9 @@ export default function TermsPage() {
 
             <Section title="Eligibility">
               <p>
-                You must be a currently enrolled student at a supported campus
-                and at least 18 years old to use On Board. You must sign up with
-                a valid campus email address.
+                You must be a verified, currently enrolled student at a
+                supported campus and at least 16 years old to use On Board.
+                You must sign up with a valid campus email address.
               </p>
             </Section>
 
@@ -50,12 +50,19 @@ export default function TermsPage() {
               <p>
                 You are responsible for activity under your account. Do not
                 share your magic link with others. If you believe your account
-                has been compromised, contact us immediately.
+                has been compromised, contact us immediately. You may delete
+                your account at any time from within the app or by contacting
+                us — see &ldquo;Weekly reset&rdquo; below for what happens to
+                your content when you do.
               </p>
             </Section>
 
             <Section title="Content rules">
-              <p>You may not post content that:</p>
+              <p>
+                We do not tolerate harassment or any behavior directed at
+                intimidating, demeaning, or targeting another person. You may
+                not post content that:
+              </p>
               <ul>
                 <li>Harasses, threatens, or targets another person.</li>
                 <li>
@@ -71,7 +78,12 @@ export default function TermsPage() {
                   Reveals another person&apos;s private information without
                   their consent (doxxing).
                 </li>
-                <li>Is sexually explicit.</li>
+                <li>
+                  Is obscene, sexually explicit, or contains nudity in a
+                  sexual context, or is otherwise graphic or unsettling. Fine
+                  art nudity is permitted but subject to review and may be
+                  removed at our discretion.
+                </li>
                 <li>Promotes illegal activity.</li>
                 <li>Impersonates another person or entity.</li>
                 <li>Constitutes spam or coordinated inauthentic behavior.</li>
@@ -158,13 +170,23 @@ export default function TermsPage() {
             </Section>
 
             <Section title="Contact">
-              <p>Questions? Use the contact form on our website.</p>
+              <p>
+                Questions about these terms? Email us at{" "}
+                <a href="mailto:support@onboardapp.org" className="font-semibold hover:underline" style={{ color: "var(--text)" }}>
+                  support@onboardapp.org
+                </a>{" "}
+                or visit our{" "}
+                <Link href="/contact" className="font-semibold hover:underline" style={{ color: "var(--text)" }}>
+                  Contact page
+                </Link>
+                .
+              </p>
             </Section>
           </div>
         </div>
       </main>
 
-      <Footer />
+      <FooterFinale />
     </>
   );
 }
