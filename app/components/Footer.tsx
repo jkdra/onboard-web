@@ -43,13 +43,6 @@ export default function Footer() {
       className="py-12 text-center text-sm flex flex-col items-center gap-6"
       style={{ borderTop: "1px solid var(--border)", color: "var(--text-secondary)" }}
     >
-      <div className="max-w-xl mx-auto px-6 text-center mb-2">
-        <h1 className="font-bold text-sm mb-2" style={{ color: "var(--text)" }}>On Board – Your Community Board</h1>
-        <p className="leading-relaxed">
-          On Board is a weekly digital bulletin board for college campuses. It provides a dedicated space for students to securely log in, post local updates, share items, and connect with their community. Every Monday at midnight, the board wipes clean for a fresh start.
-        </p>
-      </div>
-
       <div className="flex items-center gap-4 flex-wrap justify-center">
         <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
         <span className="opacity-30">·</span>
