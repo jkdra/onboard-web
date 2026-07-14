@@ -6,6 +6,22 @@
   --text: #000000;
   --text-secondary: #707070;
   --border: rgba(0, 0, 0, 0.08);
+
+  /* Fluid type scale — every step keeps a rem term and max ≤ 2.5× min (WCAG 1.4.4). */
+  --step-0: clamp(1rem, 0.93rem + 0.35vw, 1.25rem);
+  --step-1: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --step-2: clamp(1.6rem, 1.35rem + 1.3vw, 2.6rem);
+  --step-3: clamp(2.1rem, 1.6rem + 2.4vw, 4rem);
+  --step-4: clamp(2.75rem, 1.9rem + 4.2vw, 6.25rem);
+  --step-5: clamp(3.4rem, 2.2rem + 6vw, 8.5rem);
+
+  /* UGC pastels — the only color on the site. */
+  --card-green: #d9f2df;
+  --card-orange: #fde8cd;
+  --card-blue: #d6e9fb;
+  --card-pink: #fbd8e0;
+  --card-ink: #111111;
+  --card-ink-secondary: rgba(17, 17, 17, 0.55);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +31,12 @@
     --text: #ffffff;
     --text-secondary: #8e8e93;
     --border: rgba(255, 255, 255, 0.1);
+    --card-green: #1d2b21;
+    --card-orange: #2e2418;
+    --card-blue: #1a2635;
+    --card-pink: #2e1d23;
+    --card-ink: #f2f2f2;
+    --card-ink-secondary: rgba(242, 242, 242, 0.6);
   }
 }
 
@@ -24,6 +46,12 @@ html[data-theme="light"] {
   --text: #000000;
   --text-secondary: #707070;
   --border: rgba(0, 0, 0, 0.08);
+  --card-green: #d9f2df;
+  --card-orange: #fde8cd;
+  --card-blue: #d6e9fb;
+  --card-pink: #fbd8e0;
+  --card-ink: #111111;
+  --card-ink-secondary: rgba(17, 17, 17, 0.55);
 }
 
 html[data-theme="dark"] {
@@ -32,6 +60,12 @@ html[data-theme="dark"] {
   --text: #ffffff;
   --text-secondary: #8e8e93;
   --border: rgba(255, 255, 255, 0.1);
+  --card-green: #1d2b21;
+  --card-orange: #2e2418;
+  --card-blue: #1a2635;
+  --card-pink: #2e1d23;
+  --card-ink: #f2f2f2;
+  --card-ink-secondary: rgba(242, 242, 242, 0.6);
 }
 
 html {
@@ -90,5 +124,82 @@ html {
   to {
     transform: translate(-50%, -50%) rotate(var(--r, 0deg)) translateY(-34px);
     opacity: 0;
+  }
+}
+
+/* ---------- Redesign primitives ---------- */
+
+/* Hero line stagger — applied per line with --d delay. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  opacity: 0;
+  animation: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+/* Marquee — track holds two copies of the content; slides one copy's width. */
+@keyframes marquee-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-slide 40s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Ghost outlined display text. */
+.text-ghost {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text);
+  opacity: 0.5;
+}
+
+/* Scroll reveal — CSS scroll-driven where supported, visible otherwise. */
+@supports (animation-timeline: view()) {
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(2.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .scroll-reveal {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 45%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in {
+    animation: none;
+    opacity: 1;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .scroll-reveal {
+    animation: none;
   }
 }
