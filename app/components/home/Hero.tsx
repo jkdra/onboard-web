@@ -26,7 +26,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="min-h-[88svh] flex flex-col justify-center px-6 md:px-10 relative">
+    <section className="min-h-[88svh] flex flex-col justify-center px-6 md:px-10 relative overflow-hidden">
       <div className="max-w-6xl w-full mx-auto">
         <span
           className="rise-in inline-block text-sm font-semibold px-4 py-1.5 rounded-full mb-10"
@@ -102,6 +102,29 @@ export default function Hero() {
       >
         Scroll ↓
       </div>
+
+      {/* The little guy peeking out of the corner, fading into the next section. */}
+      <span
+        aria-hidden
+        className="absolute -right-14 -bottom-12 md:-right-20 md:-bottom-16 opacity-10 pointer-events-none"
+        style={{
+          width: "clamp(180px, 24vw, 340px)",
+          height: "clamp(180px, 24vw, 340px)",
+          background: "var(--text)",
+          WebkitMaskImage: "url(/logo.svg)",
+          maskImage: "url(/logo.svg)",
+          WebkitMaskSize: "contain",
+          maskSize: "contain",
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          transform: "rotate(-14deg)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-28 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, var(--bg))" }}
+      />
     </section>
   );
 }

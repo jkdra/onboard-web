@@ -9,61 +9,62 @@ import {
   MotionValue,
 } from "motion/react";
 import BoardCard, { BoardCardProps } from "@/app/components/home/BoardCard";
+import PromptCard from "@/app/components/home/PromptCard";
 
 type ScenePost = BoardCardProps & { rotate: number; x: string; y: string };
 
 const POSTS: ScenePost[] = [
   {
-    color: "green",
-    title: "brat by charli xcx is literally album of the year",
-    body: "i cant stop listening. it's been on repeat…",
-    tags: ["#music"],
-    reactions: [{ icon: "❤️", count: 89 }, { icon: "💀", count: 12 }],
+    color: "teal",
+    title: "the squirrels are getting too brave",
+    body: "one made direct eye contact w me while i ate a granola bar. i felt threatened.",
+    tags: ["#campus-life"],
+    reactions: { laugh: 52, like: 18, hug: 2 },
     timestamp: "now",
     rotate: -4, x: "-24vw", y: "-24vh",
   },
   {
-    color: "orange",
-    title: "anyone else fail the cs241 midterm",
-    body: "felt like none of that was even in the lectures. avg was 4…",
-    tags: ["#cs241"],
-    reactions: [{ icon: "❤️", count: 40 }, { icon: "👥", count: 21 }],
+    color: "indigo",
+    title: "who took my oat milk from the 3rd floor fridge",
+    body: "it had my name on it. in two places. i will find you.",
+    tags: ["#dorm-life"],
+    reactions: { laugh: 44, like: 12, dislike: 3 },
     timestamp: "now",
     rotate: 3, x: "22vw", y: "-28vh",
   },
   {
-    color: "blue",
-    title: "selling math239 textbook $40",
-    body: "barely used. two pages of highlighter, tops.",
-    tags: ["#forsale", "#math239"],
-    reactions: [{ icon: "❤️", count: 15 }],
+    color: "orange",
+    title: "prof said 'this won't be on the exam' and it was the exam",
+    body: "question 1 through question 6. i counted.",
+    tags: ["#academics"],
+    reactions: { like: 61, laugh: 38, hug: 9 },
     timestamp: "now",
     rotate: -2, x: "-26vw", y: "24vh",
   },
   {
     color: "pink",
-    title: "lost: black hydroflask, do not crash",
-    body: "covered in stickers, one says 'do not crash'. left it on a t…",
-    tags: ["#lost"],
-    reactions: [{ icon: "❤️", count: 22 }, { icon: "💀", count: 7 }],
+    title: "free couch on 4th & elm, first come first serve",
+    body: "structurally questionable but spiritually strong.",
+    tags: ["#free-stuff"],
+    reactions: { like: 27, laugh: 15, dislike: 1 },
     timestamp: "now",
     rotate: 5, x: "24vw", y: "26vh",
   },
   {
     color: "blue",
-    title: "the squirrels are getting too brave",
-    body: "one made direct eye contact w me while i ate a granola bar.",
-    tags: ["#campus-life", "#funny"],
-    reactions: [{ icon: "💀", count: 52 }],
+    title: "study room 204B has the good whiteboard markers",
+    body: "you didn't hear it from me. they're full. all of them.",
+    tags: ["#library"],
+    reactions: { like: 33, hug: 6, laugh: 4 },
     timestamp: "now",
     rotate: -6, x: "-1vw", y: "-2vh",
   },
   {
     color: "green",
-    title: "study group for bio, we have snacks",
-    body: "library 3rd floor, thursdays. bring flashcards.",
-    tags: ["#bio"],
-    reactions: [{ icon: "❤️", count: 31 }, { icon: "👥", count: 12 }],
+    title: "lost my airpod in the quad, it's playing a podcast",
+    body: "follow the faint sound of someone explaining the roman empire.",
+    tags: ["#lost-found"],
+    reactions: { laugh: 29, like: 21, hug: 3 },
     timestamp: "now",
     rotate: 2, x: "1vw", y: "30vh",
   },
@@ -73,7 +74,7 @@ const NARRATION: [number, number, string][] = [
   // [appear, disappear, text] on scroll progress
   [0.0, 0.18, "Post it."],
   [0.18, 0.38, "The whole campus sees it."],
-  [0.38, 0.52, "React, reply, repeat."],
+  [0.38, 0.56, "React, reply, repeat."],
 ];
 
 function SceneCard({
@@ -172,57 +173,13 @@ function WipeCopy({ progress }: { progress: MotionValue<number> }) {
       </motion.div>
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <motion.div style={{ opacity: freshOpacity, y: freshY, rotate: freshRotate }}>
-          <BoardCard
-            color="green"
-            title="Fresh week. Who's first?"
-            body="The board just cleared. Say something."
-            timestamp="now"
+          <PromptCard
+            prompt="What's the most unhinged thing in your notes app right now?"
             className="shadow-lg"
           />
         </motion.div>
       </div>
     </>
-  );
-}
-
-function Countdown({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0.52, 0.56, 0.66, 0.7], [0, 1, 1, 0]);
-  const scale = useTransform(progress, [0.52, 0.58], [0.7, 1]);
-  // Decorative countdown: hours tick from 02:29:14 toward zero as you scroll.
-  const seconds = useTransform(progress, [0.56, 0.7], [8954, 0]);
-  const label = useTransform(seconds, (s) => {
-    const v = Math.max(0, Math.round(s));
-    const h = String(Math.floor(v / 3600)).padStart(2, "0");
-    const m = String(Math.floor((v % 3600) / 60)).padStart(2, "0");
-    const sec = String(v % 60).padStart(2, "0");
-    return `${h}h ${m}m ${sec}s`;
-  });
-
-  return (
-    <div
-      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-      style={{ zIndex: 10 }}
-    >
-    <motion.div
-      className="rounded-3xl px-8 py-6 text-center shadow-xl"
-      style={{
-        opacity,
-        scale,
-        background: "var(--card)",
-        border: "1px solid var(--border)",
-      }}
-    >
-      <p
-        className="text-xs font-bold uppercase tracking-widest mb-2"
-        style={{ color: "var(--text-secondary)" }}
-      >
-        Clears soon
-      </p>
-      <motion.p className="font-extrabold tabular-nums" style={{ fontSize: "var(--step-3)" }}>
-        {label}
-      </motion.p>
-    </motion.div>
-    </div>
   );
 }
 
@@ -250,6 +207,7 @@ export default function BoardScene() {
           Every Monday at midnight, the board wipes clean.
         </p>
         <div className="flex flex-wrap justify-center gap-5 max-w-5xl mx-auto">
+          <PromptCard prompt="What's the most unhinged thing in your notes app right now?" />
           {POSTS.map((post) => {
             const { rotate, x: unusedX, y: unusedY, ...card } = post;
             void unusedX;
@@ -274,7 +232,6 @@ export default function BoardScene() {
         {POSTS.map((post, i) => (
           <SceneCard key={post.title} post={post} index={i} progress={scrollYProgress} />
         ))}
-        <Countdown progress={scrollYProgress} />
         <WipeCopy progress={scrollYProgress} />
       </div>
     </section>

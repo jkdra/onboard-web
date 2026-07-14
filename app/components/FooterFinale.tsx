@@ -10,6 +10,7 @@ export default function FooterFinale() {
             // Wordmark scaled to fill the row — decorative, so no 2.5× cap needed,
             // but keep a rem floor for zoom.
             fontSize: "clamp(3rem, 1rem + 12vw, 12rem)",
+            fontFamily: "'Zalando Sans Expanded', ui-sans-serif, system-ui, sans-serif",
           }}
           aria-hidden
         >

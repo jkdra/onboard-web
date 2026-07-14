@@ -20,6 +20,8 @@
   --card-orange: #fde8cd;
   --card-blue: #d6e9fb;
   --card-pink: #fbd8e0;
+  --card-indigo: #e2defb;
+  --card-teal: #d2f0ee;
   --card-ink: #111111;
   --card-ink-secondary: rgba(17, 17, 17, 0.55);
 }
@@ -35,6 +37,8 @@
     --card-orange: #2e2418;
     --card-blue: #1a2635;
     --card-pink: #2e1d23;
+    --card-indigo: #232038;
+    --card-teal: #16302e;
     --card-ink: #f2f2f2;
     --card-ink-secondary: rgba(242, 242, 242, 0.6);
   }
@@ -50,6 +54,8 @@ html[data-theme="light"] {
   --card-orange: #fde8cd;
   --card-blue: #d6e9fb;
   --card-pink: #fbd8e0;
+  --card-indigo: #e2defb;
+  --card-teal: #d2f0ee;
   --card-ink: #111111;
   --card-ink-secondary: rgba(17, 17, 17, 0.55);
 }
@@ -64,6 +70,8 @@ html[data-theme="dark"] {
   --card-orange: #2e2418;
   --card-blue: #1a2635;
   --card-pink: #2e1d23;
+  --card-indigo: #232038;
+  --card-teal: #16302e;
   --card-ink: #f2f2f2;
   --card-ink-secondary: rgba(242, 242, 242, 0.6);
 }
@@ -164,11 +172,10 @@ html {
   animation-play-state: paused;
 }
 
-/* Ghost outlined display text. */
+/* Ghost display text — low-opacity solid (the brand font doesn't outline well). */
 .text-ghost {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--text);
-  opacity: 0.5;
+  color: var(--text);
+  opacity: 0.18;
 }
 
 /* Scroll reveal — CSS scroll-driven where supported, visible otherwise. */
