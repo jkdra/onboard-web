@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "@/app/components/Footer";
+import FooterFinale from "@/app/components/FooterFinale";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — On Board",
@@ -19,7 +19,7 @@ export default function PrivacyPage() {
             ← Back
           </Link>
 
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+          <h1 className="font-extrabold tracking-tight mb-2" style={{ fontSize: "var(--step-4)", lineHeight: 1 }}>
             Privacy Policy
           </h1>
           <p className="text-sm mb-10" style={{ color: "var(--text-secondary)" }}>
@@ -183,7 +183,7 @@ export default function PrivacyPage() {
         </div>
       </main>
 
-      <Footer />
+      <FooterFinale />
     </>
   );
 }
