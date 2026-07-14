@@ -11,7 +11,9 @@ import {
 import BoardCard, { BoardCardProps } from "@/app/components/home/BoardCard";
 import PromptCard from "@/app/components/home/PromptCard";
 
-type ScenePost = BoardCardProps & { rotate: number; x: string; y: string };
+// Two columns of two — a small masonry, right column offset down, matching
+// the app's board grid instead of scattering cards across the whole viewport.
+type ScenePost = BoardCardProps & { rotate: number; column: 0 | 1 };
 
 const POSTS: ScenePost[] = [
   {
@@ -21,7 +23,7 @@ const POSTS: ScenePost[] = [
     tags: ["#campus-life"],
     reactions: { laugh: 52, like: 18, hug: 2 },
     timestamp: "now",
-    rotate: -4, x: "-24vw", y: "-24vh",
+    rotate: -2, column: 0,
   },
   {
     color: "indigo",
@@ -30,7 +32,7 @@ const POSTS: ScenePost[] = [
     tags: ["#dorm-life"],
     reactions: { laugh: 44, like: 12, dislike: 3 },
     timestamp: "now",
-    rotate: 3, x: "22vw", y: "-28vh",
+    rotate: 2, column: 1,
   },
   {
     color: "orange",
@@ -39,7 +41,7 @@ const POSTS: ScenePost[] = [
     tags: ["#academics"],
     reactions: { like: 61, laugh: 38, hug: 9 },
     timestamp: "now",
-    rotate: -2, x: "-26vw", y: "24vh",
+    rotate: 3, column: 0,
   },
   {
     color: "pink",
@@ -48,25 +50,7 @@ const POSTS: ScenePost[] = [
     tags: ["#free-stuff"],
     reactions: { like: 27, laugh: 15, dislike: 1 },
     timestamp: "now",
-    rotate: 5, x: "24vw", y: "26vh",
-  },
-  {
-    color: "blue",
-    title: "study room 204B has the good whiteboard markers",
-    body: "you didn't hear it from me. they're full. all of them.",
-    tags: ["#library"],
-    reactions: { like: 33, hug: 6, laugh: 4 },
-    timestamp: "now",
-    rotate: -6, x: "-1vw", y: "-2vh",
-  },
-  {
-    color: "green",
-    title: "lost my airpod in the quad, it's playing a podcast",
-    body: "follow the faint sound of someone explaining the roman empire.",
-    tags: ["#lost-found"],
-    reactions: { laugh: 29, like: 21, hug: 3 },
-    timestamp: "now",
-    rotate: 2, x: "1vw", y: "30vh",
+    rotate: -3, column: 1,
   },
 ];
 
@@ -91,40 +75,35 @@ function SceneCard({
   index: number;
   progress: MotionValue<number>;
 }) {
-  const start = index * 0.07;
-  const end = start + 0.12;
-  // Fly in from below, settle at pinned position, sweep away on the wipe.
-  const opacity = useTransform(progress, [start, end, 0.65, 0.74], [0, 1, 1, 0]);
-  const yIn = useTransform(
-    progress,
-    [start, end, 0.65, 0.74],
-    ["60vh", post.y, post.y, "-70vh"]
-  );
+  const start = index * 0.09;
+  const end = start + 0.14;
+  // Rise into its masonry slot, settle, fade out on the wipe. No longer
+  // scattered across the viewport — position comes from the grid it sits in.
+  const opacity = useTransform(progress, [start, end, 0.65, 0.72], [0, 1, 1, 0]);
+  const y = useTransform(progress, [start, end], [40, 0]);
   const rotate = useTransform(
     progress,
-    [start, end, 0.65, 0.74],
-    [post.rotate * 3, post.rotate, post.rotate, post.rotate * 4]
+    [start, end, 0.65, 0.72],
+    [post.rotate * 4, post.rotate, post.rotate, post.rotate * 4]
   );
 
-  const { rotate: baseRotate, x, y: baseY, ...cardProps } = post;
+  const { rotate: baseRotate, column, ...cardProps } = post;
   void baseRotate;
-  void baseY;
+  void column;
   return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-      <motion.div style={{ opacity, x, y: yIn, rotate }}>
-        <BoardCard {...cardProps} className="shadow-lg" />
-      </motion.div>
-    </div>
+    <motion.div style={{ opacity, y, rotate }}>
+      <BoardCard {...cardProps} className="shadow-lg" />
+    </motion.div>
   );
 }
 
 function Narration({ progress }: { progress: MotionValue<number> }) {
   return (
-    <>
+    <div className="relative w-full h-16 sm:h-20 md:h-40">
       {NARRATION.map(([from, to, text]) => (
         <NarrationLine key={text} from={from} to={to} text={text} progress={progress} />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -147,8 +126,12 @@ function NarrationLine({
   );
   return (
     <motion.h2
-      className="absolute inset-x-0 top-14 md:top-16 text-center font-extrabold tracking-tight px-6 pointer-events-none"
-      style={{ fontSize: "var(--step-4)", lineHeight: 1, opacity }}
+      className="absolute inset-0 flex items-center justify-center md:justify-start text-center md:text-left font-extrabold tracking-tight pointer-events-none"
+      style={{
+        fontSize: "clamp(1.5rem, 6vw, var(--step-3))",
+        lineHeight: 1.05,
+        opacity,
+      }}
     >
       {text}
     </motion.h2>
@@ -178,7 +161,10 @@ function Countdown({ progress }: { progress: MotionValue<number> }) {
   );
 
   return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ zIndex: 10 }}>
+    <div
+      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-4"
+      style={{ zIndex: 10 }}
+    >
       <motion.div
         className="rounded-3xl px-8 py-6 text-center shadow-xl"
         style={{ opacity, scale, background: bg, border: "1px solid", borderColor: border, color: fg }}
@@ -218,7 +204,7 @@ function WipeCopy({ progress }: { progress: MotionValue<number> }) {
           <span style={{ color: "var(--text-secondary)" }}>Clean slate.</span>
         </p>
       </motion.div>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-4">
         <motion.div style={{ opacity: freshOpacity, y: freshY, rotate: freshRotate }}>
           <PromptCard
             prompt="What's the most unhinged thing in your notes app right now?"
@@ -238,6 +224,9 @@ export default function BoardScene() {
     offset: ["start start", "end end"],
   });
 
+  const leftColumn = POSTS.filter((p) => p.column === 0);
+  const rightColumn = POSTS.filter((p) => p.column === 1);
+
   if (reduced) {
     return (
       <section className="px-6 md:px-10 py-24">
@@ -254,32 +243,59 @@ export default function BoardScene() {
           Every Monday at midnight, the board wipes clean. When the clock&apos;s
           almost out, the countdown turns red.
         </p>
-        <div className="flex flex-wrap justify-center gap-5 max-w-5xl mx-auto">
-          <PromptCard prompt="What's the most unhinged thing in your notes app right now?" />
-          {POSTS.map((post) => {
-            const { rotate, x: unusedX, y: unusedY, ...card } = post;
-            void unusedX;
-            void unusedY;
-            return (
-              <BoardCard
-                key={card.title}
-                {...card}
-                style={{ transform: `rotate(${rotate}deg)` }}
-              />
-            );
-          })}
+        <div className="max-w-3xl mx-auto flex justify-center">
+          <PromptCard prompt="What's the most unhinged thing in your notes app right now?" className="mb-6" />
+        </div>
+        <div className="max-w-sm sm:max-w-md mx-auto grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-4">
+            {leftColumn.map(({ rotate, column, ...card }) => {
+              void column;
+              return (
+                <BoardCard key={card.title} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
+              );
+            })}
+          </div>
+          <div className="flex flex-col gap-4 mt-10">
+            {rightColumn.map(({ rotate, column, ...card }) => {
+              void column;
+              return (
+                <BoardCard key={card.title} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
+              );
+            })}
+          </div>
         </div>
       </section>
     );
   }
 
   return (
-    <section ref={ref} style={{ height: "350vh" }} aria-label="How On Board works">
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <Narration progress={scrollYProgress} />
-        {POSTS.map((post, i) => (
-          <SceneCard key={post.title} post={post} index={i} progress={scrollYProgress} />
-        ))}
+    <section ref={ref} style={{ height: "300vh" }} aria-label="How On Board works">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center px-5 sm:px-6 md:px-12">
+        <div className="w-full max-w-5xl mx-auto grid gap-3 sm:gap-5 md:gap-12 md:grid-cols-2 items-center">
+          <Narration progress={scrollYProgress} />
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-6">
+            <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6">
+              {leftColumn.map((post) => (
+                <SceneCard
+                  key={post.title}
+                  post={post}
+                  index={POSTS.indexOf(post)}
+                  progress={scrollYProgress}
+                />
+              ))}
+            </div>
+            <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-16">
+              {rightColumn.map((post) => (
+                <SceneCard
+                  key={post.title}
+                  post={post}
+                  index={POSTS.indexOf(post)}
+                  progress={scrollYProgress}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
         <Countdown progress={scrollYProgress} />
         <WipeCopy progress={scrollYProgress} />
       </div>
