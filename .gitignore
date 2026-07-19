@@ -48,3 +48,13 @@ CLAUDE.local.md
 
 # local preview server config
 .claude/launch.json
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+
+!.env.example
