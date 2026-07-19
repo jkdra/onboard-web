@@ -76,7 +76,7 @@ export default function BoardCountdown() {
           className="font-extrabold leading-[0.85] tracking-tight whitespace-nowrap transition-colors duration-700"
           style={{
             fontFamily: DISPLAY_FONT,
-            fontSize: "clamp(2.5rem, 11vw, 8rem)",
+            fontSize: "clamp(1.75rem, 11vw, 8rem)",
             color,
           }}
         >
@@ -101,8 +101,8 @@ export default function BoardCountdown() {
             textWrap: "balance",
           }}
         >
-          every monday at midnight, the whole board clears. no archive, no
-          scroll-back — you had to be there.
+          every monday at midnight, the whole board clears. fresh week,
+          fresh posts — you had to be there.
         </p>
       </div>
     </section>

@@ -67,7 +67,7 @@ export default function ComingSoon() {
   }, [posts]);
 
   return (
-    <section className="px-6 md:px-10 py-32 text-center overflow-hidden">
+    <section className="px-6 md:px-10 py-20 md:py-32 text-center overflow-hidden">
       <div className="max-w-4xl mx-auto">
         <h2
           className="font-extrabold tracking-tight mb-10"

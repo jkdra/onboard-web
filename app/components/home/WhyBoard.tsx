@@ -1,6 +1,6 @@
 export default function WhyBoard() {
   return (
-    <section className="px-6 md:px-10 py-28 md:py-40" aria-label="Why On Board exists">
+    <section className="px-6 md:px-10 py-28 md:py-40 overflow-hidden" aria-label="Why On Board exists">
       <div className="max-w-6xl w-full mx-auto text-center">
         <h2
           className="scroll-reveal font-extrabold tracking-tight"

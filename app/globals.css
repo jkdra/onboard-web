@@ -81,6 +81,7 @@ html {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  overflow-x: hidden;
 }
 
 @layer base {

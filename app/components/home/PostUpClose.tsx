@@ -48,7 +48,7 @@ function Comment({ who, text }: { who: string; text: string }) {
 // site visibly wears the same skin as the product the screenshot came from.
 export default function PostUpClose() {
   return (
-    <section className="px-6 md:px-10 py-24 md:py-32" aria-label="What a post looks like">
+    <section className="px-6 md:px-10 py-24 md:py-32 overflow-hidden" aria-label="What a post looks like">
       <div className="max-w-6xl mx-auto grid gap-12 md:gap-16 md:grid-cols-[0.9fr_1.1fr] items-center">
         {/* Left — the thesis, in the site's voice. */}
         <div className="scroll-reveal">
@@ -77,7 +77,7 @@ export default function PostUpClose() {
         </div>
 
         {/* Right — the app screen, leaning toward the cursor. */}
-        <TiltCard className="w-full max-w-md mx-auto md:mx-0 md:justify-self-end">
+        <TiltCard className="w-full max-w-sm sm:max-w-md mx-auto md:mx-0 md:justify-self-end">
           <div
             className="rounded-[2rem] p-6 sm:p-7 shadow-2xl"
             style={{
@@ -143,7 +143,7 @@ export default function PostUpClose() {
                 <span style={{ fontSize: 13, lineHeight: 1 }}>✕</span>
               </Chip>
               <div
-                className="flex-1 rounded-full px-4 py-2.5 text-sm truncate"
+                className="flex-1 min-w-0 rounded-full px-4 py-2.5 text-sm truncate"
                 style={{
                   background: "color-mix(in srgb, var(--card-ink) 6%, transparent)",
                   color: "var(--card-ink)",

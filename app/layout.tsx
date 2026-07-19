@@ -11,12 +11,16 @@ const sansBody = Zalando_Sans_SemiExpanded({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
+  fallback: ["system-ui", "arial"],
+  adjustFontFallback: false,
 });
 
 const sansDisplay = Zalando_Sans_Expanded({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-display",
+  fallback: ["system-ui", "arial"],
+  adjustFontFallback: false,
 });
 
 const siteDescription =

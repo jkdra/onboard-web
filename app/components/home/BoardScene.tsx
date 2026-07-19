@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import {
   motion,
   useScroll,
@@ -63,7 +63,7 @@ const NARRATION: [number, number, string][] = [
 ];
 
 // Countdown ticks from ~2.5hrs to 0 across this scroll window.
-const COUNTDOWN_START_SECONDS = 8954;
+const COUNTDOWN_START_SECONDS = 3600;
 
 function SceneCard({
   post,
@@ -79,18 +79,18 @@ function SceneCard({
   // Rise into its masonry slot, settle, then rip straight down on the wipe.
   // Each card exits with a slight stagger — bottom cards first so they
   // don't overlap as they rip downward.
-  const exitStart = 0.63 + (POSTS.length - 1 - index) * 0.012;
+  const exitStart = 0.62 + (POSTS.length - 1 - index) * 0.012;
   const exitEnd = exitStart + 0.06;
-  const opacity = useTransform(progress, [start, end, exitStart, exitEnd], [0, 1, 1, 0]);
-  const y = useTransform(progress, [start, end, exitStart, exitEnd], [40, 0, 0, 200]);
+  const opacity = useTransform(progress, [start, end, exitStart, exitEnd], [0, 1, 1, 0], { clamp: true });
+  const y = useTransform(progress, [start, end, exitStart, exitEnd], [40, 0, 0, 1000], { clamp: true });
   // Rotate only on entry — no spin on exit, cards rip straight down.
-  const rotate = useTransform(progress, [start, end], [post.rotate * 2, post.rotate]);
+  const rotate = useTransform(progress, [start, end], [post.rotate * 2, post.rotate], { clamp: true });
 
   const { rotate: baseRotate, column, ...cardProps } = post;
   void baseRotate;
   void column;
   return (
-    <motion.div style={{ opacity, y, rotate }}>
+    <motion.div style={{ opacity, y, rotate, willChange: "opacity, transform" }}>
       <div className="card-float" style={{ animationDelay: `${index * 0.8}s` }}>
         <BoardCard {...cardProps} className="shadow-xl" />
       </div>
@@ -123,7 +123,8 @@ function NarrationLine({
   const opacity = useTransform(
     progress,
     [from, from + fade, to - fade, to],
-    [0, 1, 1, 0]
+    [0, 1, 1, 0],
+    { clamp: true }
   );
   return (
     <motion.h2
@@ -172,7 +173,7 @@ function CounterRow({
 }) {
   return (
     <div
-      className="flex flex-col md:flex-row items-start md:items-baseline font-extrabold tabular-nums leading-[0.85] tracking-tighter whitespace-nowrap text-[34vw] md:text-[clamp(6rem,15vw,15rem)]"
+      className="flex flex-row items-baseline font-extrabold tabular-nums leading-[0.85] tracking-tighter whitespace-nowrap text-[11vw] sm:text-[14vw] md:text-[clamp(6rem,15vw,15rem)]"
       style={{ color }}
     >
       <Segment value={h} unit="h" />
@@ -200,15 +201,17 @@ function AmbientCountdown({ progress }: { progress: MotionValue<number> }) {
   // once the wipe copy takes over.
   const presence = useTransform(
     progress,
-    [0.04, 0.30, 0.60, 0.62, 0.76, 0.82],
-    [0.06, 0.12, 0.20, 0.30, 0.30, 0]
+    [0.04, 0.30, 0.58, 0.62, 0.76, 0.82],
+    [0.08, 0.15, 0.30, 0.40, 0.40, 0],
+    { clamp: true }
   );
   // At zero the timer goes black (on the red page). Holds through the card
   // rip, then slowly fades back to var(--text) as the page returns to normal.
   const darkOpacity = useTransform(
     progress,
-    [0.62, 0.621, 0.72, 0.80],
-    [0, 1, 1, 0]
+    [0.619, 0.62, 0.72, 0.80],
+    [0, 1, 1, 0],
+    { clamp: true }
   );
 
   return (
@@ -247,15 +250,32 @@ export const redTakeoverStore = {
 function RedTakeover({ progress }: { progress: MotionValue<number> }) {
   const opacity = useTransform(
     progress,
-    [0.62, 0.621, 0.72, 0.82],
-    [0, 1, 1, 0]
+    [0.619, 0.62, 0.72, 0.82],
+    [0, 1, 1, 0],
+    { clamp: true }
   );
   useMotionValueEvent(opacity, "change", (latest) => redTakeoverStore.set(latest));
+
+  // Sync Safari's address-bar tint with the red takeover so it doesn't
+  // stick after scrolling past. Resets to the original color on unmount.
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
+    if (!meta) return;
+    const original = meta.content;
+    const unsub = opacity.on("change", (v) => {
+      meta.content = v > 0.5 ? RED : original;
+    });
+    return () => {
+      unsub();
+      meta.content = original;
+    };
+  }, [opacity]);
+
   return (
     <motion.div
       aria-hidden
       className="absolute inset-0 z-0 pointer-events-none"
-      style={{ opacity, background: RED }}
+      style={{ opacity, background: RED, willChange: "opacity" }}
     />
   );
 }
@@ -273,19 +293,20 @@ function CardGrid({
 }) {
   const brightness = useTransform(
     progress,
-    [0.62, 0.621, 0.72, 0.80],
-    [1, 0, 0, 1]
+    [0.619, 0.62, 0.72, 0.80],
+    [1, 0, 0, 1],
+    { clamp: true }
   );
   const filter = useTransform(brightness, (b) => `brightness(${b})`);
 
   return (
     <motion.div
-      className="relative z-10 w-full max-w-5xl mx-auto grid gap-4 sm:gap-6 md:gap-10 md:grid-cols-[0.85fr_1.15fr] items-center pb-8 md:pb-0"
-      style={{ filter }}
+      className="relative z-10 w-full max-w-5xl mx-auto grid gap-3 sm:gap-6 md:gap-10 md:grid-cols-[0.85fr_1.15fr] items-center pb-8 md:pb-0"
+      style={{ filter, willChange: "filter" }}
     >
       <Narration progress={progress} />
-      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-6">
-        <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 md:gap-6">
+        <div className="flex flex-col gap-2 sm:gap-4 md:gap-6">
           {leftColumn.map((post) => (
             <SceneCard
               key={post.title}
@@ -295,7 +316,7 @@ function CardGrid({
             />
           ))}
         </div>
-        <div className="flex flex-col gap-2.5 sm:gap-4 md:gap-6 mt-6 sm:mt-8 md:mt-12">
+        <div className="flex flex-col gap-2 sm:gap-4 md:gap-6 mt-4 sm:mt-8 md:mt-12">
           {rightColumn.map((post) => (
             <SceneCard
               key={post.title}
@@ -396,8 +417,8 @@ export default function BoardScene() {
   }
 
   return (
-    <section ref={ref} style={{ height: "300vh" }} aria-label="How On Board works">
-      <div className="sticky top-0 h-[100svh] overflow-hidden flex items-center px-5 sm:px-6 md:px-12">
+    <section ref={ref} style={{ height: "300vh", touchAction: "pan-y" }} aria-label="How On Board works">
+      <div className="sticky top-0 h-[100svh] overflow-hidden flex items-center px-4 sm:px-6 md:px-12">
         <RedTakeover progress={scrollYProgress} />
         <AmbientCountdown progress={scrollYProgress} />
         <CardGrid

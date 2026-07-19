@@ -39,9 +39,9 @@ export default function Hero() {
             Let&apos;s get you
           </span>
           <span
-            className="rise-in block font-extrabold whitespace-nowrap"
+            className="rise-in block font-extrabold"
             style={{
-              fontSize: "clamp(3.25rem, 16.5vw, 22rem)",
+              fontSize: "clamp(2.5rem, 15vw, 22rem)",
               lineHeight: 0.9,
               letterSpacing: "-0.03em",
               // Optical alignment: at this size the "O" glyph's side bearing
