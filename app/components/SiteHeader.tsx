@@ -5,8 +5,11 @@ import MobileMenu from "@/app/components/MobileMenu";
 export default function SiteHeader() {
   return (
     <header className="relative flex items-center justify-between px-6 md:px-10 py-6 z-50">
-      <Link href="/" aria-label="On Board home">
+      <Link href="/" aria-label="On Board home" className="flex items-center gap-3 group">
         <HoverLogo size={36} />
+        <span className="font-extrabold tracking-tight pt-1" style={{ fontFamily: "var(--font-display)", fontSize: "1.35rem" }}>
+          On Board
+        </span>
       </Link>
       
       {/* Desktop Nav */}
