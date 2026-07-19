@@ -6,7 +6,7 @@ import BoardCard from "@/app/components/home/BoardCard";
 
 const STAGES = [
   { label: "Closed Beta", status: "current" as const },
-  { label: "Open Beta", status: "next" as const },
+  { label: "Early Access", status: "next" as const },
   { label: "Public Launch", status: "later" as const },
 ];
 
@@ -147,6 +147,9 @@ export default function ComingSoon() {
               >
                 <form
                   onSubmit={saveDraft}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setIsEditing(false);
+                  }}
                   className="rounded-3xl p-4 sm:p-5 w-full aspect-[4/5] flex flex-col shadow-2xl relative"
                   style={{
                     background: `var(--card-${draftColor})`,
@@ -156,12 +159,14 @@ export default function ComingSoon() {
                   <input
                     autoFocus
                     placeholder="Title..."
+                    aria-label="Post title"
                     value={draftTitle}
                     onChange={(e) => setDraftTitle(e.target.value)}
                     className="w-full bg-transparent outline-none placeholder:text-current placeholder:opacity-40 font-extrabold text-lg leading-snug tracking-tight mb-2"
                   />
                   <textarea
                     placeholder="Description..."
+                    aria-label="Post description"
                     value={draftBody}
                     onChange={(e) => setDraftBody(e.target.value)}
                     className="w-full bg-transparent outline-none placeholder:text-current placeholder:opacity-40 text-sm leading-relaxed flex-1 resize-none overflow-y-auto overflow-x-hidden break-words"
@@ -169,6 +174,7 @@ export default function ComingSoon() {
                   />
                   <input
                     placeholder="Tags (comma separated)"
+                    aria-label="Post tags, comma separated"
                     value={draftTags}
                     onChange={(e) => setDraftTags(e.target.value)}
                     className="w-full bg-transparent outline-none placeholder:text-current placeholder:opacity-40 text-xs font-semibold mb-3"
@@ -198,6 +204,7 @@ export default function ComingSoon() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 onClick={startDraft}
+                aria-label="Try posting to the board"
                 className="w-[240px] sm:w-[280px] aspect-[4/5] rounded-3xl flex items-center justify-center transition-all group"
                 style={{
                   border: "3px dashed var(--border)",

@@ -6,7 +6,7 @@ function Row() {
       {LINES.map((line) => (
         <div key={line} className="flex items-center shrink-0">
           <span
-            className="text-ghost font-extrabold whitespace-nowrap px-6"
+            className="text-ghost font-extrabold uppercase whitespace-nowrap px-6"
             style={{ fontSize: "var(--step-3)" }}
           >
             {line}

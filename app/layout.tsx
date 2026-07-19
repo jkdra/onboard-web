@@ -1,15 +1,33 @@
 /// <reference types="react/canary" />
 import type { Metadata } from "next";
 import { ViewTransition } from "react";
+import { Zalando_Sans_SemiExpanded, Zalando_Sans_Expanded } from "next/font/google";
 import SiteHeader from "@/app/components/SiteHeader";
 import "./globals.css";
+
+// Self-hosted via next/font — no render-blocking fonts.googleapis.com request,
+// metric-adjusted fallbacks eliminate layout shift on font swap.
+const sansBody = Zalando_Sans_SemiExpanded({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
+
+const sansDisplay = Zalando_Sans_Expanded({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display",
+});
 
 const siteDescription =
   "On Board is the weekly digital bulletin board for your campus. Post, react, and connect — every week, a fresh board.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://onboardapp.org"),
-  title: "On Board – Your Community Board",
+  title: {
+    default: "On Board – Your Community Board",
+    template: "%s — On Board",
+  },
   description: siteDescription,
   openGraph: {
     title: "On Board – Your Community Board",
@@ -17,14 +35,33 @@ export const metadata: Metadata = {
     url: "https://onboardapp.org",
     siteName: "On Board",
     type: "website",
-    images: [{ url: "/icon.png", width: 512, height: 512, alt: "On Board" }],
   },
   twitter: {
-    card: "summary",
-    title: "On Board — Your Campus Bulletin Board",
+    card: "summary_large_image",
+    title: "On Board – Your Community Board",
     description: siteDescription,
-    images: ["/icon.png"],
   },
+};
+
+// Structured data for search engines — the app itself plus the org behind it.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "On Board",
+      url: "https://onboardapp.org",
+      logo: "https://onboardapp.org/icon.png",
+    },
+    {
+      "@type": "MobileApplication",
+      name: "On Board",
+      operatingSystem: "iOS",
+      applicationCategory: "SocialNetworkingApplication",
+      description: siteDescription,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -33,16 +70,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`h-full antialiased ${sansBody.variable} ${sansDisplay.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Zalando+Sans+SemiExpanded:ital,wght@0,200..900;1,200..900&family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap"
-          rel="stylesheet"
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -55,8 +90,15 @@ export default function RootLayout({
             `,
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <ViewTransition>
           <SiteHeader />
           {children}

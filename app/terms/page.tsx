@@ -3,13 +3,14 @@ import Link from "next/link";
 import FooterFinale from "@/app/components/FooterFinale";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — On Board",
+  title: "Terms of Service",
+  description: "The terms that apply when you use On Board.",
 };
 
 export default function TermsPage() {
   return (
     <>
-      <main className="flex-1 px-6 pb-20">
+      <main id="main-content" className="flex-1 px-6 pb-20">
         <div className="max-w-2xl mx-auto">
           <Link
             href="/"

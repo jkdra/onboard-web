@@ -3,13 +3,15 @@ import Link from "next/link";
 import FooterFinale from "@/app/components/FooterFinale";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — On Board",
+  title: "Privacy Policy",
+  description:
+    "How On Board handles your data: what we collect, what we don't, and the controls you have.",
 };
 
 export default function PrivacyPage() {
   return (
     <>
-      <main className="flex-1 px-6 pb-20">
+      <main id="main-content" className="flex-1 px-6 pb-20">
         <div className="max-w-2xl mx-auto">
           <Link
             href="/"

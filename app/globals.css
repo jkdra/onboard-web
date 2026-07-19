@@ -4,7 +4,7 @@
   --bg: #ffffff;
   --card: #ffffff;
   --text: #000000;
-  --text-secondary: #707070;
+  --text-secondary: #5c5c5c;
   --border: rgba(0, 0, 0, 0.08);
 
   /* Fluid type scale — every step keeps a rem term and max ≤ 2.5× min (WCAG 1.4.4). */
@@ -48,7 +48,7 @@ html[data-theme="light"] {
   --bg: #ffffff;
   --card: #ffffff;
   --text: #000000;
-  --text-secondary: #707070;
+  --text-secondary: #5c5c5c;
   --border: rgba(0, 0, 0, 0.08);
   --card-green: #d9f2df;
   --card-orange: #fde8cd;
@@ -85,10 +85,10 @@ html {
 
 @layer base {
   html, body {
-    font-family: 'Zalando Sans SemiExpanded', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans, 'Zalando Sans SemiExpanded'), ui-sans-serif, system-ui, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Zalando Sans Expanded', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-display, 'Zalando Sans Expanded'), ui-sans-serif, system-ui, sans-serif;
   }
 }
 
@@ -212,6 +212,35 @@ html {
     animation-timeline: view();
     animation-range: entry 10% entry 45%;
   }
+}
+
+/* Visible keyboard focus — several controls strip the default outline
+   (outline-none) for their custom rounded styling, so replace it explicitly
+   rather than leaving keyboard users with no focus indicator. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

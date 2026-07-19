@@ -1,56 +1,50 @@
-const STATEMENTS = [
+const RULES = [
   {
-    n: "01",
-    title: "Post to the board.",
-    body: "Say what's on your mind. The whole campus sees it.",
+    title: "post whatever.",
+    body: "a thought, a warning, a confession at 2am. no followers to perform for — the whole campus just sees it.",
   },
   {
-    n: "02",
-    title: "Fresh every week.",
-    body: "Monday at midnight, it's wiped. Start again.",
+    title: "it all clears monday.",
+    body: "every week opens empty. nothing you post sticks around, and that's the point.",
   },
   {
-    n: "03",
-    title: "Students only.",
-    body: "Your campus email gets you in. Nobody else.",
+    title: "students only.",
+    body: "your campus email is the entire door. no strangers, no bots, nobody from back home.",
   },
   {
-    n: "04",
-    title: "React & comment.",
-    body: "React, reply, repeat.",
+    title: "react, reply, repeat.",
+    body: "❤️ 💀 🫂, or just say something back. that's the whole app.",
   },
 ];
 
 export default function Manifesto() {
   return (
-    <section className="px-6 md:px-10 py-24">
+    <section className="px-6 md:px-10 py-24" aria-label="How the board works">
       <div className="max-w-6xl mx-auto">
-        {STATEMENTS.map((s) => (
+        <p
+          className="scroll-reveal mb-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.28em]"
+          style={{ color: "var(--text-secondary)" }}
+        >
+          how the board works
+        </p>
+        {RULES.map((r) => (
           <div
-            key={s.n}
-            className="scroll-reveal py-10 md:py-14 grid grid-cols-[auto_1fr] gap-x-6 md:gap-x-12 items-baseline"
+            key={r.title}
+            className="scroll-reveal py-10 md:py-12"
             style={{ borderTop: "1px solid var(--border)" }}
           >
-            <span
-              className="font-extrabold text-ghost"
-              style={{ fontSize: "var(--step-2)" }}
+            <h2
+              className="font-extrabold tracking-tight"
+              style={{ fontSize: "var(--step-3)", lineHeight: 1.03 }}
             >
-              {s.n}
-            </span>
-            <div>
-              <h2
-                className="font-extrabold tracking-tight"
-                style={{ fontSize: "var(--step-3)", lineHeight: 1.05 }}
-              >
-                {s.title}
-              </h2>
-              <p
-                className="mt-3 max-w-lg"
-                style={{ fontSize: "var(--step-0)", color: "var(--text-secondary)" }}
-              >
-                {s.body}
-              </p>
-            </div>
+              {r.title}
+            </h2>
+            <p
+              className="mt-3 max-w-lg"
+              style={{ fontSize: "var(--step-0)", color: "var(--text-secondary)" }}
+            >
+              {r.body}
+            </p>
           </div>
         ))}
       </div>

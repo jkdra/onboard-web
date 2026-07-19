@@ -3,7 +3,7 @@ import Link from "next/link";
 import FooterFinale from "@/app/components/FooterFinale";
 
 export const metadata: Metadata = {
-  title: "Changelog — On Board",
+  title: "Changelog",
   description:
     "What's new in On Board — the latest release notes, updated automatically from the App Store.",
 };
@@ -68,7 +68,7 @@ export default async function ChangelogPage() {
 
   return (
     <>
-      <main className="flex-1 px-6 pb-20">
+      <main id="main-content" className="flex-1 px-6 pb-20">
         <div className="max-w-2xl mx-auto">
           <Link
             href="/"

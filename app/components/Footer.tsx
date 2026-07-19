@@ -44,6 +44,8 @@ export default function Footer() {
       style={{ borderTop: "1px solid var(--border)", color: "var(--text-secondary)" }}
     >
       <div className="flex items-center gap-4 flex-wrap justify-center">
+        <Link href="/about" className="hover:underline">About</Link>
+        <span className="opacity-30">·</span>
         <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
         <span className="opacity-30">·</span>
         <Link href="/terms" className="hover:underline">Terms of Service</Link>
@@ -53,14 +55,17 @@ export default function Footer() {
 
       {theme !== null && (
         <div
+          role="group"
+          aria-label="Theme"
           className="inline-flex items-center gap-1 p-1 rounded-full text-xs font-medium"
-          style={{ 
-            background: "var(--card)", 
+          style={{
+            background: "var(--card)",
             border: "1px solid var(--border)"
           }}
         >
           <button
             onClick={() => handleThemeChange("system")}
+            aria-pressed={theme === "system"}
             className={`px-3 py-1.5 rounded-full transition-all cursor-pointer ${
               theme === "system" ? "shadow-sm font-semibold" : "opacity-60 hover:opacity-100"
             }`}
@@ -73,6 +78,7 @@ export default function Footer() {
           </button>
           <button
             onClick={() => handleThemeChange("light")}
+            aria-pressed={theme === "light"}
             className={`px-3 py-1.5 rounded-full transition-all cursor-pointer ${
               theme === "light" ? "shadow-sm font-semibold" : "opacity-60 hover:opacity-100"
             }`}
@@ -85,6 +91,7 @@ export default function Footer() {
           </button>
           <button
             onClick={() => handleThemeChange("dark")}
+            aria-pressed={theme === "dark"}
             className={`px-3 py-1.5 rounded-full transition-all cursor-pointer ${
               theme === "dark" ? "shadow-sm font-semibold" : "opacity-60 hover:opacity-100"
             }`}
