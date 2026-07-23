@@ -67,7 +67,7 @@ export default function ComingSoon() {
   }, [posts]);
 
   return (
-    <section className="px-6 md:px-10 py-20 md:py-32 text-center overflow-hidden">
+    <section className="px-6 md:px-10 py-20 md:py-32 overflow-hidden">
       <div className="max-w-4xl mx-auto">
         <h2
           className="font-extrabold tracking-tight mb-10"
@@ -76,7 +76,7 @@ export default function ComingSoon() {
           We&apos;re already testing it.
         </h2>
 
-        <ol className="flex flex-wrap items-center justify-center gap-3 mb-4">
+        <ol className="flex flex-wrap items-center justify-start gap-3 mb-4">
           {STAGES.map((stage, i) => (
             <li key={stage.label} className="flex items-center gap-3">
               <span
@@ -116,7 +116,7 @@ export default function ComingSoon() {
         </p>
 
         {/* Interactive "Try Posting" Demo */}
-        <div className="max-w-5xl mx-auto mb-20 text-left flex flex-wrap justify-center gap-4 sm:gap-6">
+        <div className="max-w-5xl mb-20 text-left flex flex-wrap justify-start gap-4 sm:gap-6">
           <AnimatePresence mode="popLayout">
             {posts.map((post, i) => (
               <motion.div

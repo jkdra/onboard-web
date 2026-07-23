@@ -60,7 +60,7 @@ export default function BoardCountdown() {
 
   return (
     <section
-      className="px-6 md:px-10 py-24 md:py-32 text-center overflow-hidden"
+      className="px-6 md:px-10 py-24 md:py-32 overflow-hidden"
       aria-label="This week's board wipes clean every Monday at midnight."
     >
       <div className="max-w-4xl mx-auto">
@@ -93,7 +93,7 @@ export default function BoardCountdown() {
         </div>
 
         <p
-          className="mt-10 mx-auto max-w-md"
+          className="mt-10 max-w-md"
           style={{
             fontSize: "var(--step-0)",
             lineHeight: 1.5,
