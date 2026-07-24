@@ -1,6 +1,6 @@
 # On Board — Web
 
-The marketing site for **On Board**, a weekly campus bulletin board app for iOS. Students join their campus's board, post anonymously, react, and comment — and every Monday, the board resets to a clean slate.
+The marketing site for **On Board**, a weekly campus bulletin board app for iOS. Students join their campus's board and post under their handle, react, and comment — and every Monday, the board resets to a clean slate.
 
 **[onboardapp.org](https://onboardapp.org)**
 
