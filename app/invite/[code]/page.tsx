@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import FooterFinale from "@/app/components/FooterFinale";
+import InviteDownloadButton from "./InviteDownloadButton";
 
 export const metadata: Metadata = {
   title: "You've been invited to On Board",
@@ -109,15 +110,13 @@ export default async function InvitePage({ params }: PageProps) {
               </div>
             </div>
 
-            <a
+            <InviteDownloadButton
               href={TESTFLIGHT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group relative flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all overflow-hidden"
               style={{ background: "var(--text)", color: "var(--bg)" }}
             >
               <span className="relative z-10">Download via TestFlight</span>
-            </a>
+            </InviteDownloadButton>
           </div>
 
           <p className="text-sm font-medium" style={{ color: "var(--text-secondary)" }}>
