@@ -5,6 +5,7 @@
 // import { useState } from "react";
 // import { supabase } from "@/lib/supabase";
 import HoverLogo from "@/app/components/HoverLogo";
+import { APP_STORE_URL } from "@/lib/appStore";
 
 export default function Hero() {
   // const [email, setEmail] = useState("");
@@ -70,7 +71,7 @@ export default function Hero() {
 
         <div className="rise-in max-w-md ml-[0.06em]" style={{ "--d": "0.6s" } as React.CSSProperties}>
           <a
-            href={process.env.NEXT_PUBLIC_TESTFLIGHT_URL || "https://testflight.apple.com/join/397k6bF1"}
+            href={APP_STORE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-6 py-3.5 rounded-2xl text-base font-semibold hover:opacity-85 transition-opacity"

@@ -19,6 +19,19 @@
   "images": {
     "binding": "IMAGES"
   },
+  // Runtime env for the Worker. `APP_STORE_ID` is read server-side by
+  // /changelog, which is ISR (revalidate 1h) — so it's needed at BUILD time
+  // (from .env.local, for the initial static render) *and* here at RUNTIME, or
+  // the hourly revalidation re-renders the "coming soon" empty state and caches
+  // that for an hour.
+  //
+  // NEXT_PUBLIC_APP_STORE_URL deliberately does NOT belong here: Next inlines
+  // NEXT_PUBLIC_* into the client bundle at build time, so a runtime Worker var
+  // would have no effect. It comes from .env.local at build, with a literal
+  // fallback in lib/appStore.ts.
+  "vars": {
+    "APP_STORE_ID": "6782297168"
+  },
   "observability": {
     "enabled": true
   }

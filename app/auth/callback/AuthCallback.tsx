@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { APP_STORE_URL } from "@/lib/appStore";
 
 // The app's own deep link (AppConfiguration.authRedirectURL). On a phone with
 // the app installed, tapping the email link opens the app directly via the
 // universal link — this page (and this button) is the fallback for desktop,
 // in-browser opens, or when the app isn't installed yet.
 const APP_DEEP_LINK = "onboard://auth-callback";
-const TESTFLIGHT_URL = process.env.NEXT_PUBLIC_TESTFLIGHT_URL || "#";
 
 type State = "verified" | "expired" | "idle";
 
@@ -119,13 +119,13 @@ export default function AuthCallback() {
           Open On Board →
         </a>
         <a
-          href={TESTFLIGHT_URL}
+          href={APP_STORE_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm hover:underline"
           style={{ color: "var(--text-secondary)" }}
         >
-          don&apos;t have the app? get the beta →
+          don&apos;t have the app? download it →
         </a>
       </div>
     </main>

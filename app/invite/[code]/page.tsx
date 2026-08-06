@@ -4,17 +4,12 @@ import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import FooterFinale from "@/app/components/FooterFinale";
 import InviteDownloadButton from "./InviteDownloadButton";
+import { APP_STORE_URL } from "@/lib/appStore";
 
 export const metadata: Metadata = {
   title: "You've been invited to On Board",
   description: "Join your campus on On Board. Enter your invite code to skip the line.",
 };
-
-// Same source as Hero.tsx: env override with the live TestFlight link as
-// fallback.
-const TESTFLIGHT_URL =
-  process.env.NEXT_PUBLIC_TESTFLIGHT_URL ||
-  "https://testflight.apple.com/join/397k6bF1";
 
 // Codes are 8 chars from an unambiguous lowercase alphanumeric alphabet
 // (see generate_referral_code in the viral_waitlist migration). Accept a
@@ -111,11 +106,11 @@ export default async function InvitePage({ params }: PageProps) {
             </div>
 
             <InviteDownloadButton
-              href={TESTFLIGHT_URL}
+              href={APP_STORE_URL}
               className="group relative flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all overflow-hidden"
               style={{ background: "var(--text)", color: "var(--bg)" }}
             >
-              <span className="relative z-10">Download via TestFlight</span>
+              <span className="relative z-10">Download on the App Store</span>
             </InviteDownloadButton>
           </div>
 

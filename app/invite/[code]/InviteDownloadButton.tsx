@@ -11,7 +11,7 @@ interface Props {
 
 /**
  * Download CTA that performs a deferred deep-link hand-off before sending the
- * user to TestFlight / the App Store: it copies this invite page's URL to the
+ * user to the App Store: it copies this invite page's URL to the
  * clipboard. The freshly-installed iOS app reads that back off the clipboard
  * (PendingReferralCode.hydrateFromPasteboardIfNeeded) and pre-fills the code,
  * so the user never has to type it. Universal links only fire when the app is
