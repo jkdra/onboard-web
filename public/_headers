@@ -2,3 +2,11 @@
 # https://opennext.js.org/cloudflare/caching#static-assets-caching
 /_next/static/*
   Cache-Control: public,max-age=31536000,immutable
+
+# Apple's AASA spec wants application/json, and the next.config.ts headers()
+# rule does NOT apply here — on the OpenNext/Cloudflare deployment, files in
+# public/ are served by the static-asset layer, which bypasses the worker
+# entirely (verified live: the response had no content-type at all). Apple's
+# CDN currently tolerates it; don't depend on that.
+/.well-known/apple-app-site-association
+  Content-Type: application/json

@@ -5,7 +5,7 @@ import FooterFinale from "@/app/components/FooterFinale";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Why On Board exists: a weekly digital bulletin board built at Irvine Valley College for campuses where students don't stick around after class.",
+    "Why On Board exists: a weekly digital bulletin board born at Irvine Valley College, built for campuses where students don't stick around after class.",
 };
 
 export default function AboutPage() {
@@ -51,9 +51,9 @@ export default function AboutPage() {
               every week.
             </p>
             <p>
-              We&apos;re early. On Board is currently in closed beta at IVC,
-              being tested by a small group of students before a wider rollout
-              this fall. If you&apos;ve got feedback, we&apos;d love to hear
+              We&apos;re early. On Board started at Irvine Valley College and is
+              opening to more Southern California campuses — with a wider
+              rollout this fall. If you&apos;ve got feedback, we&apos;d love to hear
               it — see our{" "}
               <Link href="/contact" className="font-semibold hover:underline" style={{ color: "var(--text)" }}>
                 Contact page

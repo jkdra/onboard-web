@@ -226,7 +226,7 @@ export default function ComingSoon() {
           className="mb-2"
           style={{ fontSize: "var(--step-1)", color: "var(--text-secondary)" }}
         >
-          Closed beta is live at Irvine Valley College. You guys are lucky (well, if you have an iPhone).
+          Live at Irvine Valley College, with more SoCal campuses on the way. You guys are lucky (well, if you have an iPhone).
         </p>
         <p style={{ fontSize: "var(--step-1)", color: "var(--text-secondary)" }}>
           Hang tight, Android warriors—we&apos;ll get to you soon.

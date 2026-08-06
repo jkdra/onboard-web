@@ -80,10 +80,10 @@ export default async function InvitePage({ params }: PageProps) {
                   <span className="font-bold" style={{ color: "var(--text)" }}>
                     @{inviterHandle}
                   </span>{" "}
-                  wants you On Board! Use their code to get priority access.
+                  wants you On Board! Use their code to skip the waitlist.
                 </>
               ) : (
-                <>Someone on campus wants you On Board! Use their code to get priority access.</>
+                <>Someone on campus wants you On Board! Use their code to skip the waitlist.</>
               )}
             </p>
 

@@ -54,7 +54,7 @@ export default async function Image() {
               marginBottom: 40,
             }}
           >
-            Closed Beta · IVC
+            Now Boarding · SoCal
           </div>
           <div
             style={{

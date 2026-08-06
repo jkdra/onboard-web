@@ -25,7 +25,7 @@ export default function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="text-sm mb-10" style={{ color: "var(--text-secondary)" }}>
-            Last updated: July 14, 2026
+            Last updated: August 6, 2026
           </p>
 
           <div className="space-y-8 text-[15px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>
@@ -41,16 +41,18 @@ export default function PrivacyPage() {
                   <strong>Account information.</strong> Your name, birthday,
                   campus email address, and phone number. Your campus email is
                   used to verify that you are a currently enrolled student at
-                  a supported school; sign-in is handled via a magic link — no
-                  password required. Your birthday is used to confirm you meet
-                  our minimum age requirement.
+                  a supported school. You can sign in with a one-time code
+                  sent to your phone or email, with Apple or Google, or with
+                  an optional password. Your birthday is used to confirm you
+                  meet our minimum age requirement.
                 </li>
                 <li>
                   <strong>Content you create.</strong> Posts, comments,
                   reactions, and any photos or videos you upload, all used to
-                  power the board&apos;s core functionality. Posts are
-                  anonymous to other users by default; your email is only
-                  visible if another user views your profile.
+                  power the board&apos;s core functionality. Posts are written
+                  under your handle: the feed shows a card without a name, but
+                  opening a post shows who wrote it and links to your profile.
+                  Your email address is never shown to other users.
                 </li>
                 <li>
                   <strong>Device token.</strong> If you grant notification
@@ -60,7 +62,15 @@ export default function PrivacyPage() {
                 <li>
                   <strong>Usage data.</strong> We record when you last opened
                   the app to determine whether to send re-engagement
-                  notifications. We do not collect analytics beyond this.
+                  notifications.
+                </li>
+                <li>
+                  <strong>Unsupported-school requests.</strong> If you try to
+                  verify with a school email we don&apos;t support yet, we
+                  record that email&apos;s domain (for example,
+                  &ldquo;example.edu&rdquo;) and a count of attempts — not the
+                  address itself — so we know which campuses to open next. We
+                  do not collect analytics beyond the items described here.
                 </li>
                 <li>
                   <strong>Waitlist email.</strong> If you sign up on our website
