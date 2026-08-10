@@ -27,9 +27,14 @@ const POSTS: ScenePost[] = [
     rotate: -2, column: 0,
   },
   {
+    // Author-styled: title, body, and an italic sign-off — the dynamic
+    // typography system on a card.
     color: "indigo",
-    title: "who took my oat milk",
-    body: "it had my name on it. in two places. i memorized the hum of the 3rd floor fridge. i will find you and i will be so normal about it.",
+    lines: [
+      { kind: "title", text: "who took my oat milk" },
+      { kind: "body", text: "it had my name on it. in two places. i memorized the hum of the 3rd floor fridge." },
+      { kind: "body", text: "i will find you. and i will be so normal about it.", em: "italic" },
+    ],
     tags: ["#dorm-life"],
     reactions: { laugh: 44, like: 12, dislike: 3 },
     timestamp: "now",
@@ -45,9 +50,15 @@ const POSTS: ScenePost[] = [
     rotate: 3, column: 0,
   },
   {
+    // Author-styled: title, subtitle, bullets — the listing-shaped post.
     color: "pink",
-    title: "free couch, 4th & elm",
-    body: "structurally questionable but spiritually strong. bring three friends and a strong back. smells mostly fine. first come, first served.",
+    lines: [
+      { kind: "title", text: "free couch, 4th & elm" },
+      { kind: "subtitle", text: "gone by tonight, guaranteed" },
+      { kind: "bullet", text: "structurally questionable, spiritually strong" },
+      { kind: "bullet", text: "smells mostly fine" },
+      { kind: "bullet", text: "bring three friends and a strong back" },
+    ],
     tags: ["#free-stuff"],
     reactions: { like: 27, laugh: 15, dislike: 1 },
     timestamp: "now",
@@ -308,7 +319,7 @@ function CardGrid({
         <div className="flex flex-col gap-2 sm:gap-4 md:gap-6">
           {leftColumn.map((post) => (
             <SceneCard
-              key={post.body}
+              key={(post.body ?? post.lines?.[0]?.text) as string}
               post={post}
               index={POSTS.indexOf(post)}
               progress={progress}
@@ -318,7 +329,7 @@ function CardGrid({
         <div className="flex flex-col gap-2 sm:gap-4 md:gap-6 mt-4 sm:mt-8 md:mt-12">
           {rightColumn.map((post) => (
             <SceneCard
-              key={post.body}
+              key={(post.body ?? post.lines?.[0]?.text) as string}
               post={post}
               index={POSTS.indexOf(post)}
               progress={progress}
@@ -398,7 +409,7 @@ export default function BoardScene() {
             {leftColumn.map(({ rotate, column, ...card }) => {
               void column;
               return (
-                <BoardCard key={card.body} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
+                <BoardCard key={(card.body ?? card.lines?.[0]?.text) as string} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
               );
             })}
           </div>
@@ -406,7 +417,7 @@ export default function BoardScene() {
             {rightColumn.map(({ rotate, column, ...card }) => {
               void column;
               return (
-                <BoardCard key={card.body} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
+                <BoardCard key={(card.body ?? card.lines?.[0]?.text) as string} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
               );
             })}
           </div>

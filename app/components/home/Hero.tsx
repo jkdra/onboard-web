@@ -42,10 +42,12 @@ export default function Hero() {
             Let&apos;s get you
           </span>
           <span
-            className="rise-in block font-extrabold"
+            className="rise-in block font-extrabold whitespace-nowrap text-[clamp(2.6rem,14vw,5rem)] md:text-[clamp(3rem,9vw,6.8rem)]"
             style={{
-              fontSize: "clamp(2.5rem, 15vw, 22rem)",
-              lineHeight: 0.9,
+              // One line, always — the wordmark never wraps. Sized against
+              // the hero COLUMN (via the md tier), not the viewport, since
+              // the countdown card shares the row from md up.
+              lineHeight: 0.92,
               letterSpacing: "-0.03em",
               // Optical alignment: at this size the "O" glyph's side bearing
               // pushes its visible edge right of the left rail — tuck it back.
@@ -78,10 +80,10 @@ export default function Hero() {
             className="inline-block px-6 py-3.5 rounded-2xl text-base font-semibold hover:opacity-85 transition-opacity"
             style={{ background: "var(--text)", color: "var(--bg)" }}
           >
-            Get on this week&apos;s board
+            Get the app
           </a>
           <p className="mt-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-            free · your campus email is the door · iphone for now
+            iphone for now — android&apos;s coming
           </p>
 
           {/* Android waitlist — disabled, not how admission actually works right now.
@@ -132,9 +134,10 @@ export default function Hero() {
         </div>
         </div>
 
-        {/* The app's countdown card, live — the product artifact IS the
-            hero image, ticking the real time to this week's wipe. */}
-        <div className="rise-in justify-self-start md:justify-self-end" style={{ "--d": "0.75s" } as React.CSSProperties}>
+        {/* The app's countdown card, live — the supporting artifact beside
+            the tagline, ticking the real time to this week's wipe. Desktop
+            only: on mobile the tagline IS the hero, undiluted. */}
+        <div className="rise-in hidden md:block justify-self-end" style={{ "--d": "0.75s" } as React.CSSProperties}>
           <HeroCountdownCard />
         </div>
       </div>

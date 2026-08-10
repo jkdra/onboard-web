@@ -69,7 +69,7 @@ export default function HeroCountdownCard() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Download On Board on the App Store — this week's board clears Monday at midnight"
-      className="group relative block w-full max-w-sm rounded-3xl p-6 sm:p-7 overflow-hidden border shadow-xl transition-transform duration-300 hover:scale-[1.02] hover:-rotate-1 rotate-[2deg]"
+      className="group relative block w-full max-w-sm rounded-3xl p-6 sm:p-7 overflow-hidden border shadow-xl transition-transform duration-300 hover:scale-[1.02]"
       style={{
         background: "var(--card)",
         borderColor: "var(--border)",
@@ -78,8 +78,8 @@ export default function HeroCountdownCard() {
     >
       {/* This week's prompt — same fictional week as the board scene below. */}
       <p
-        className="font-bold leading-snug mb-10 pr-6"
-        style={{ fontFamily: DISPLAY_FONT, fontSize: "clamp(1.15rem, 1.05rem + 0.6vw, 1.45rem)" }}
+        className="font-bold text-base leading-snug mb-10 pr-6"
+        style={{ fontFamily: DISPLAY_FONT }}
       >
         What&apos;s the most unhinged thing in your notes app right now?
       </p>
@@ -95,7 +95,7 @@ export default function HeroCountdownCard() {
         className="font-extrabold leading-none tracking-tight whitespace-nowrap transition-colors duration-700"
         style={{
           fontFamily: DISPLAY_FONT,
-          fontSize: "clamp(1.9rem, 1.6rem + 1.6vw, 2.6rem)",
+          fontSize: "clamp(1.6rem, 1.4rem + 1vw, 2rem)",
           color: urgent ? RED : "var(--text)",
         }}
       >

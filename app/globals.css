@@ -114,8 +114,21 @@ html {
   to   { opacity: 1; }
 }
 .menu-veil-in { animation: menu-veil-in 0.25s ease-out both; }
+@keyframes menu-item-out {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(-14px); }
+}
+.menu-item-out {
+  animation: menu-item-out 0.28s cubic-bezier(0.55, 0, 0.55, 0.2) both;
+  animation-delay: calc(var(--menu-i, 0) * 40ms);
+}
+@keyframes menu-veil-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+.menu-veil-out { animation: menu-veil-out 0.3s ease-in both; animation-delay: 0.12s; }
 @media (prefers-reduced-motion: reduce) {
-  .menu-item-in, .menu-veil-in { animation: none; }
+  .menu-item-in, .menu-veil-in, .menu-item-out, .menu-veil-out { animation: none; }
 }
 
 /* Progressive header veil: content scrolling under the sticky header gets

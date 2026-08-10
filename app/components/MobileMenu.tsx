@@ -12,14 +12,24 @@ const LINKS = [
 ] as const;
 
 export default function MobileMenu() {
-  const [isOpen, setIsOpen] = useState(false);
+  // Three phases so closing can ANIMATE: the items rise back up into the
+  // header (reverse of entry) while the veil fades, then the portal
+  // unmounts. Entry showed where the menu came from; exit shows where it
+  // returns to.
+  const [phase, setPhase] = useState<"closed" | "open" | "closing">("closed");
+  const isOpen = phase === "open";
+  const open = () => setPhase("open");
+  const close = () => {
+    setPhase("closing");
+    window.setTimeout(() => setPhase("closed"), 420);
+  };
 
   // The open menu owns the viewport — the page behind it shouldn't
   // scroll, and the header's own veil stands down (data attribute read by
   // globals.css) so its gradient band doesn't smear over the menu's flat
   // wash.
   useEffect(() => {
-    if (!isOpen) return;
+    if (phase === "closed") return;
     // Scroll lock via non-passive event capture, deliberately NOT via CSS
     // overflow: `overflow:hidden` on body breaks position:sticky for its
     // descendants (the header un-stuck and jumped off-screen the moment
@@ -35,14 +45,14 @@ export default function MobileMenu() {
       document.removeEventListener("touchmove", prevent);
       delete document.documentElement.dataset.menuOpen;
     };
-  }, [isOpen]);
+  }, [phase]);
 
   return (
     <>
       {/* Mobile Hamburger Toggle — stays above the veil so the ✕ is reachable. */}
       <button
         className="md:hidden relative z-50 p-2 -mr-2 flex flex-col justify-center items-end gap-1.5 w-10 h-10"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => (isOpen ? close() : open())}
         aria-label="Toggle menu"
         aria-expanded={isOpen}
       >
@@ -59,15 +69,15 @@ export default function MobileMenu() {
           it swallowed the wordmark and this very ✕ button — document-level
           z (header 50 > veil 40) is unambiguous. Client-only state, so the
           portal never runs during SSR. */}
-      {isOpen && createPortal(
+      {phase !== "closed" && createPortal(
         <div
-          className="menu-veil-in fixed inset-0 z-40 md:hidden"
+          className={`${phase === "closing" ? "menu-veil-out" : "menu-veil-in"} fixed inset-0 z-40 md:hidden`}
           style={{
             background: "color-mix(in srgb, var(--bg) 72%, transparent)",
             WebkitBackdropFilter: "blur(18px)",
             backdropFilter: "blur(18px)",
           }}
-          onClick={() => setIsOpen(false)}
+          onClick={close}
         >
           <nav
             className="rail flex flex-col gap-7 pt-28 text-base font-semibold uppercase tracking-widest"
@@ -77,9 +87,9 @@ export default function MobileMenu() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="menu-item-in hover:opacity-60 transition-opacity"
-                style={{ "--menu-i": i } as React.CSSProperties}
-                onClick={() => setIsOpen(false)}
+                className={`${phase === "closing" ? "menu-item-out" : "menu-item-in"} hover:opacity-60 transition-opacity`}
+                style={{ "--menu-i": phase === "closing" ? LINKS.length - 1 - i : i } as React.CSSProperties}
+                onClick={close}
               >
                 {link.label}
               </Link>
