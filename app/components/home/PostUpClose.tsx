@@ -120,11 +120,18 @@ export default function PostUpClose() {
             >
               someone&apos;s dog got loose by the science building
             </h3>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: "var(--card-ink-secondary)" }}>
+            <p className="text-sm leading-relaxed mb-3" style={{ color: "var(--card-ink-secondary)" }}>
               he&apos;s having the best day of his life. i tried to catch him and
-              now i&apos;m also having a great day. we&apos;re just running now,
-              honestly.
+              now i&apos;m also having a great day. current facts:
             </p>
+            {/* Posts aren't a strict title/description pair anymore — real
+                structure (headings, bullets) is part of the format, so the
+                showcase post wears it. */}
+            <ul className="text-sm leading-relaxed mb-6 space-y-1" style={{ color: "var(--card-ink-secondary)" }}>
+              <li className="flex gap-2"><span aria-hidden>•</span><span>answers to &quot;waffles&quot;, ignores &quot;WAFFLES&quot;</span></li>
+              <li className="flex gap-2"><span aria-hidden>•</span><span>last seen: fountain lawn, extremely fast</span></li>
+              <li className="flex gap-2"><span aria-hidden>•</span><span>do not chase. he thinks it&apos;s a game. he is winning</span></li>
+            </ul>
 
             <div
               className="pt-5 mb-5 space-y-4"

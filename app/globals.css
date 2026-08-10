@@ -99,6 +99,63 @@ html {
   .rail { padding-inline: 2.5rem; }
 }
 
+/* Mobile-menu item reveal: drops in from above, staggered per item via
+   --menu-i. Show, don't tell — the motion says "this came from the header". */
+@keyframes menu-item-in {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+.menu-item-in {
+  animation: menu-item-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--menu-i, 0) * 55ms);
+}
+@keyframes menu-veil-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.menu-veil-in { animation: menu-veil-in 0.25s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .menu-item-in, .menu-veil-in { animation: none; }
+}
+
+/* Progressive header veil: content scrolling under the sticky header gets
+   blurrier the deeper it goes, under a tint that gradients from the page
+   background to transparent — no hard edge, no solid bar. Two stacked
+   backdrop-filter layers with offset masks approximate a true gradient
+   blur. The veil extends 45% past the bar so the fade happens below the
+   header content, not across it. */
+.header-veil, .header-tint {
+  position: absolute;
+  inset: 0 0 -45% 0;
+  pointer-events: none;
+}
+.header-veil::before,
+.header-veil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.header-veil::before {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+.header-veil::after {
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  -webkit-mask-image: linear-gradient(to bottom, black 15%, transparent 60%);
+  mask-image: linear-gradient(to bottom, black 15%, transparent 60%);
+}
+.header-tint {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--bg) 88%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 55%, transparent) 55%,
+    transparent 100%
+  );
+}
+
 @layer base {
   html, body {
     font-family: var(--font-sans, 'Zalando Sans SemiExpanded'), ui-sans-serif, system-ui, sans-serif;

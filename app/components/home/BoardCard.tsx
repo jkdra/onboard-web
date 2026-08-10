@@ -21,7 +21,10 @@ export type Reactions = Partial<
 
 export type BoardCardProps = {
   color: keyof typeof COLORS;
-  title: string;
+  /** Optional — posts aren't a strict title/description pair anymore. A
+   * body-only card renders its body at display size, like the app's
+   * body-only tier. */
+  title?: string;
   body: string;
   tags?: string[];
   reactions?: Reactions;
@@ -55,16 +58,23 @@ export default function BoardCard({
         ...style,
       }}
     >
-      <h3 className="shrink-0 font-extrabold text-sm sm:text-lg leading-snug tracking-tight mb-1.5 sm:mb-2 line-clamp-2">
-        {title}
-      </h3>
+      {title && (
+        <h3 className="shrink-0 font-extrabold text-sm sm:text-lg leading-snug tracking-tight mb-1.5 sm:mb-2 line-clamp-2">
+          {title}
+        </h3>
+      )}
       {/* Body is the only element that flexes: it fills the slack on short posts
           and clips (behind a soft fade) on long ones, so the fixed-height card
-          never squishes the title or reactions. */}
+          never squishes the title or reactions. Body-only cards promote the
+          body to display type — the app's body-only tier. */}
       <div className="relative flex-1 min-h-0 mb-2 sm:mb-3">
         <p
-          className="h-full overflow-hidden text-xs sm:text-sm leading-relaxed"
-          style={{ color: "var(--card-ink-secondary)" }}
+          className={
+            title
+              ? "h-full overflow-hidden text-xs sm:text-sm leading-relaxed"
+              : "h-full overflow-hidden font-extrabold text-sm sm:text-xl leading-snug tracking-tight"
+          }
+          style={{ color: title ? "var(--card-ink-secondary)" : "var(--card-ink)" }}
         >
           {body}
         </p>

@@ -4,9 +4,15 @@ import MobileMenu from "@/app/components/MobileMenu";
 
 export default function SiteHeader() {
   return (
-    <header className="relative py-6 z-50">
-      <div className="rail flex items-center justify-between">
-      <Link href="/" aria-label="On Board home" className="flex items-center gap-3 group">
+    <header className="sticky top-0 py-6 z-50">
+      <span aria-hidden className="header-veil" />
+      <span aria-hidden className="header-tint" />
+      {/* z-50: keeps the wordmark and hamburger crisp above the mobile
+          menu's fixed z-40 veil (a child of this header's stacking context). */}
+      <div className="rail relative z-50 flex items-center justify-between">
+      {/* relative z-50: the mobile menu's veil mounts inside this rail's
+          stacking context, so the wordmark needs its own z to stay crisp. */}
+      <Link href="/" aria-label="On Board home" className="relative z-50 flex items-center gap-3 group">
         <HoverLogo size={36} />
         <span className="font-extrabold tracking-tight pt-1" style={{ fontFamily: "var(--font-display)", fontSize: "1.35rem" }}>
           On Board

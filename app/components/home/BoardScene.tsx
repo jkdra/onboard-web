@@ -6,7 +6,6 @@ import {
   useScroll,
   useTransform,
   useReducedMotion,
-  useMotionValueEvent,
   MotionValue,
 } from "motion/react";
 import BoardCard, { BoardCardProps } from "@/app/components/home/BoardCard";
@@ -18,9 +17,10 @@ type ScenePost = BoardCardProps & { rotate: number; column: 0 | 1 };
 
 const POSTS: ScenePost[] = [
   {
+    // Body-only — posts aren't a strict title/description pair anymore,
+    // and one card in the demo grid should say so.
     color: "teal",
-    title: "the squirrels are getting bold",
-    body: "one made direct eye contact while i ate a granola bar. i think it wanted the bar. i let it win. i live here now, it lives here too.",
+    body: "a squirrel made direct eye contact with me and i simply handed over the granola bar. i live under its rule now.",
     tags: ["#campus-life"],
     reactions: { laugh: 52, like: 18, hug: 2 },
     timestamp: "now",
@@ -185,8 +185,8 @@ function CounterRow({
 
 // The countdown — anchored in the bottom-leading corner, still behind the
 // cards (z-0). Oversized for drama, tucked in the corner so it doesn't
-// overpower the board. At zero it goes black on a red page, then slowly
-// returns to normal.
+// overpower the board. Turns red in the final stretch, inverts at zero on
+// the ink takeover, then slowly returns to normal.
 function AmbientCountdown({ progress }: { progress: MotionValue<number> }) {
   const seconds = useTransform(progress, [0.04, 0.62], [COUNTDOWN_START_SECONDS, 0], {
     clamp: true,
@@ -205,9 +205,18 @@ function AmbientCountdown({ progress }: { progress: MotionValue<number> }) {
     [0.08, 0.15, 0.30, 0.40, 0.40, 0],
     { clamp: true }
   );
-  // At zero the timer goes black (on the red page). Holds through the card
-  // rip, then slowly fades back to var(--text) as the page returns to normal.
-  const darkOpacity = useTransform(
+  // Final stretch: the timer itself turns red — the one thing red means on
+  // this site ("time's almost up", matching BoardCountdown's urgent state).
+  // Small area, correct semantics; the takeover itself is ink.
+  const urgentOpacity = useTransform(
+    progress,
+    [0.50, 0.545, 0.615, 0.62],
+    [0, 1, 1, 0],
+    { clamp: true }
+  );
+  // At zero the timer inverts to the page color on the ink field, holds
+  // through the card rip, then fades back as the page returns.
+  const invertedOpacity = useTransform(
     progress,
     [0.619, 0.62, 0.72, 0.80],
     [0, 1, 1, 0],
@@ -222,48 +231,45 @@ function AmbientCountdown({ progress }: { progress: MotionValue<number> }) {
     >
       <div className="relative">
         <CounterRow h={h} m={m} s={sec} color="var(--text)" />
-        <motion.div className="absolute inset-0" style={{ opacity: darkOpacity }}>
-          <CounterRow h={h} m={m} s={sec} color="#000000" />
+        <motion.div className="absolute inset-0" style={{ opacity: urgentOpacity }}>
+          <CounterRow h={h} m={m} s={sec} color={RED} />
+        </motion.div>
+        <motion.div className="absolute inset-0" style={{ opacity: invertedOpacity }}>
+          <CounterRow h={h} m={m} s={sec} color="var(--bg)" />
         </motion.div>
       </div>
     </motion.div>
   );
 }
 
-export const redTakeoverStore = {
-  value: 0,
-  listeners: new Set<() => void>(),
-  set(v: number) {
-    if (this.value !== v) {
-      this.value = v;
-      this.listeners.forEach((l) => l());
-    }
-  },
-  subscribe(l: () => void) {
-    this.listeners.add(l);
-    return () => this.listeners.delete(l);
-  },
-};
-
-// Full-page red takeover — the entire viewport SNAPS to red the instant the
-// timer hits zero, then SLOWLY fades back to the regular background color.
-function RedTakeover({ progress }: { progress: MotionValue<number> }) {
+// Full-page ink takeover — the viewport SNAPS to the theme's ink color
+// (black on light, white on dark) the instant the timer hits zero, then
+// slowly fades back. This used to be red, and red was the wrong word:
+// on this site red means "time's almost up" (BoardCountdown's urgent
+// state), but the clear itself isn't an emergency — it's the product's
+// promise. Ink reads as "gone": the field swallows the board, the cards
+// rip away into it, and the page comes back empty. The snap stays; only
+// the meaning changed. (Also kinder: a full-viewport saturated red
+// strobing under scroll-scrubbing was a photosensitivity hazard ink
+// isn't.)
+function ClearTakeover({ progress }: { progress: MotionValue<number> }) {
   const opacity = useTransform(
     progress,
     [0.619, 0.62, 0.72, 0.82],
     [0, 1, 1, 0],
     { clamp: true }
   );
-  useMotionValueEvent(opacity, "change", (latest) => redTakeoverStore.set(latest));
 
-  // Sync Safari's address-bar tint with the red takeover so it doesn't
-  // stick after scrolling past. Resets to the original color on unmount.
+  // Sync Safari's address-bar tint with the takeover so it doesn't stick
+  // after scrolling past. Resets to the original color on unmount.
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
     if (!meta) return;
     const original = meta.content;
     const unsub = opacity.on("change", (v) => {
-      meta.content = v > 0.5 ? RED : original;
+      meta.content = v > 0.5
+        ? getComputedStyle(document.documentElement).getPropertyValue("--text").trim()
+        : original;
     });
     return () => {
       unsub();
@@ -275,13 +281,15 @@ function RedTakeover({ progress }: { progress: MotionValue<number> }) {
     <motion.div
       aria-hidden
       className="absolute inset-0 z-0 pointer-events-none"
-      style={{ opacity, background: RED, willChange: "opacity" }}
+      style={{ opacity, background: "var(--text)", willChange: "opacity" }}
     />
   );
 }
 
-// Card grid with narration — during the red takeover, brightness drops to 0
-// so cards and text become black silhouettes, then slowly restores.
+// Card grid with narration. The cards keep their tone colors straight
+// through the takeover — pastel cards ripping down into a solid ink field
+// is the product truth drawn literally (the brand is monochrome; the
+// posts are the color, and the clear takes them).
 function CardGrid({
   leftColumn,
   rightColumn,
@@ -291,25 +299,16 @@ function CardGrid({
   rightColumn: ScenePost[];
   progress: MotionValue<number>;
 }) {
-  const brightness = useTransform(
-    progress,
-    [0.619, 0.62, 0.72, 0.80],
-    [1, 0, 0, 1],
-    { clamp: true }
-  );
-  const filter = useTransform(brightness, (b) => `brightness(${b})`);
-
   return (
     <motion.div
       className="relative z-10 w-full max-w-5xl mx-auto grid gap-3 sm:gap-6 md:gap-10 md:grid-cols-[0.85fr_1.15fr] items-center pb-8 md:pb-0"
-      style={{ filter, willChange: "filter" }}
     >
       <Narration progress={progress} />
       <div className="grid grid-cols-2 gap-2 sm:gap-4 md:gap-6">
         <div className="flex flex-col gap-2 sm:gap-4 md:gap-6">
           {leftColumn.map((post) => (
             <SceneCard
-              key={post.title}
+              key={post.body}
               post={post}
               index={POSTS.indexOf(post)}
               progress={progress}
@@ -319,7 +318,7 @@ function CardGrid({
         <div className="flex flex-col gap-2 sm:gap-4 md:gap-6 mt-4 sm:mt-8 md:mt-12">
           {rightColumn.map((post) => (
             <SceneCard
-              key={post.title}
+              key={post.body}
               post={post}
               index={POSTS.indexOf(post)}
               progress={progress}
@@ -399,7 +398,7 @@ export default function BoardScene() {
             {leftColumn.map(({ rotate, column, ...card }) => {
               void column;
               return (
-                <BoardCard key={card.title} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
+                <BoardCard key={card.body} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
               );
             })}
           </div>
@@ -407,7 +406,7 @@ export default function BoardScene() {
             {rightColumn.map(({ rotate, column, ...card }) => {
               void column;
               return (
-                <BoardCard key={card.title} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
+                <BoardCard key={card.body} {...card} style={{ transform: `rotate(${rotate}deg)` }} />
               );
             })}
           </div>
@@ -417,9 +416,14 @@ export default function BoardScene() {
   }
 
   return (
-    <section ref={ref} style={{ height: "300vh", touchAction: "pan-y" }} aria-label="How On Board works">
+    <section ref={ref} className="relative" style={{ height: "300vh", touchAction: "pan-y" }} aria-label="How On Board works">
+      {/* Inert deep-link marker at the takeover beat — landing on
+          /#the-clear paints the scene mid-wipe on first frame (also what
+          headless capture uses, since compositors skip programmatic
+          scrolls). */}
+      <div id="the-clear" aria-hidden className="absolute left-0 w-px h-px" style={{ top: "46%" }} />
       <div className="sticky top-0 h-[100svh] overflow-hidden flex items-center px-4 sm:px-6 md:px-12">
-        <RedTakeover progress={scrollYProgress} />
+        <ClearTakeover progress={scrollYProgress} />
         <AmbientCountdown progress={scrollYProgress} />
         <CardGrid
           leftColumn={leftColumn}
