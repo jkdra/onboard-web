@@ -86,7 +86,7 @@ export default function Hero() {
             Download Now
           </a>
           <p className="mt-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-            iphone for now — android&apos;s coming
+            iPhone for now — Android&apos;s coming
           </p>
 
           {/* Android waitlist — disabled, not how admission actually works right now.

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const RULES: { title: string; body: React.ReactNode }[] = [
   {
-    title: "post whatever.",
+    title: "Post Whatever.",
     body: (
       <>
         Social mixers, club meetings, class help, or if you just want to
@@ -16,16 +16,16 @@ const RULES: { title: string; body: React.ReactNode }[] = [
     ),
   },
   {
-    title: "it all clears monday.",
+    title: "It All Clears Monday.",
     body: "Every week's a blank slate. That means fresh stuff each week. Don't worry, you can still see prior weeks. You can't do that with real bulletin boards.",
   },
   {
-    title: "students only.",
-    body: "your campus email is the entire door. no strangers, no bots, nobody from back home.",
+    title: "Students Only.",
+    body: "Your campus email is the entire door. No strangers, no bots, nobody from back home.",
   },
   {
-    title: "react, reply, repeat.",
-    body: "❤️ 💀 🫂, or just say something back. that's the whole app.",
+    title: "React, Reply, Repeat.",
+    body: "❤️ 💀 🫂, or just say something back. That's the whole app.",
   },
 ];
 
@@ -37,7 +37,7 @@ export default function Manifesto() {
           className="scroll-reveal mb-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.28em]"
           style={{ color: "var(--text-secondary)" }}
         >
-          how the board works
+          How the Board Works
         </p>
         {RULES.map((r) => (
           <div
