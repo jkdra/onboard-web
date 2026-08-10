@@ -112,13 +112,6 @@ export default function HeroCountdownCard() {
         )}
       </div>
 
-      <p
-        className="mt-5 text-sm font-semibold underline underline-offset-4 decoration-2 group-hover:opacity-70 transition-opacity"
-        style={{ color: "var(--text)" }}
-      >
-        Download on the App Store
-      </p>
-
       {/* The Host peeking from the corner — the app card's own recipe
           (faint, cropped by the card edge), masked with the text color so
           both themes work for free. */}

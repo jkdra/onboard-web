@@ -77,6 +77,7 @@ export default function Hero() {
 
         <div className="rise-in max-w-md ml-[0.06em]" style={{ "--d": "0.6s" } as React.CSSProperties}>
           <a
+            id="hero-cta"
             href={APP_STORE_URL}
             target="_blank"
             rel="noopener noreferrer"

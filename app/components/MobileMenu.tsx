@@ -5,10 +5,10 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 
 const LINKS = [
-  { href: "/about", label: "About" },
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },
   { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About" },
 ] as const;
 
 export default function MobileMenu() {
