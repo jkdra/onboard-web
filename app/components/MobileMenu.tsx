@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { APP_STORE_URL } from "@/lib/appStore";
 
 const LINKS = [
   { href: "/privacy", label: "Privacy" },
@@ -88,12 +89,24 @@ export default function MobileMenu() {
                 key={link.href}
                 href={link.href}
                 className={`${phase === "closing" ? "menu-item-out" : "menu-item-in"} hover:opacity-60 transition-opacity`}
-                style={{ "--menu-i": phase === "closing" ? LINKS.length - 1 - i : i } as React.CSSProperties}
+                style={{ "--menu-i": phase === "closing" ? LINKS.length - i : i } as React.CSSProperties}
                 onClick={close}
               >
                 {link.label}
               </Link>
             ))}
+            {/* The download CTA rides the same list — bottom of the stack,
+                so it's first out on close (reverse stagger index 0). */}
+            <a
+              href={APP_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${phase === "closing" ? "menu-item-out" : "menu-item-in"} font-bold`}
+              style={{ "--menu-i": phase === "closing" ? 0 : LINKS.length } as React.CSSProperties}
+              onClick={close}
+            >
+              Download Now
+            </a>
           </nav>
         </div>,
         document.body

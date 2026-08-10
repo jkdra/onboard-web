@@ -66,16 +66,22 @@ export default function SiteHeader() {
           <Link href="/contact" className="hover:opacity-60 transition-opacity">Contact</Link>
           <Link href="/about" className="hover:opacity-60 transition-opacity">About</Link>
         </span>
+        {/* The pill's box collapses with it (width, margin, padding) — a
+            contextual header reserves no seat for an absent control. */}
         <a
           href={APP_STORE_URL}
           target="_blank"
           rel="noopener noreferrer"
           aria-hidden={!showCta}
           tabIndex={showCta ? 0 : -1}
-          className="ml-6 px-4 py-2 rounded-full normal-case tracking-normal text-sm font-bold transition-all duration-300 ease-out hover:opacity-85"
+          className="py-2 rounded-full normal-case tracking-normal text-sm font-bold whitespace-nowrap overflow-hidden transition-all duration-300 ease-out hover:opacity-85"
           style={{
             background: "var(--text)",
             color: "var(--bg)",
+            maxWidth: showCta ? 200 : 0,
+            marginLeft: showCta ? 24 : 0,
+            paddingLeft: showCta ? 16 : 0,
+            paddingRight: showCta ? 16 : 0,
             opacity: showCta ? 1 : 0,
             transform: showCta ? "none" : "translateY(-6px)",
             pointerEvents: showCta ? "auto" : "none",
