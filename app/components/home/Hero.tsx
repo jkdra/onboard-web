@@ -37,7 +37,10 @@ export default function Hero() {
         <h1 className="tracking-tight mb-8">
           <span
             className="rise-in block font-bold ml-[0.04em]"
-            style={{ fontSize: "var(--step-2)", lineHeight: 1.2, "--d": "0.15s" } as React.CSSProperties}
+            // Kisses the wordmark below: the pull-in is in em of the SMALL
+            // line, so the lockup tightens proportionally as the pair
+            // scales instead of drifting apart at display sizes.
+            style={{ fontSize: "var(--step-2)", lineHeight: 1.1, marginBottom: "-0.18em", "--d": "0.15s" } as React.CSSProperties}
           >
             Let&apos;s get you
           </span>
@@ -80,7 +83,7 @@ export default function Hero() {
             className="inline-block px-6 py-3.5 rounded-2xl text-base font-semibold hover:opacity-85 transition-opacity"
             style={{ background: "var(--text)", color: "var(--bg)" }}
           >
-            Get the app
+            Download Now
           </a>
           <p className="mt-3 text-sm" style={{ color: "var(--text-secondary)" }}>
             iphone for now — android&apos;s coming
@@ -141,6 +144,26 @@ export default function Hero() {
           <HeroCountdownCard />
         </div>
       </div>
+
+      {/* Mobile keeps the Host instead of the card: peeking from the
+          bottom-trailing corner, faint, cropped by the hero's edge —
+          the app's corner-peek gesture as the quiet supporting element. */}
+      <span
+        aria-hidden
+        className="md:hidden absolute -right-8 -bottom-7 w-[190px] h-[190px] opacity-15 pointer-events-none"
+        style={{
+          background: "var(--text)",
+          transform: "rotate(-14deg)",
+          WebkitMaskImage: "url(/logo.svg)",
+          maskImage: "url(/logo.svg)",
+          WebkitMaskSize: "contain",
+          maskSize: "contain",
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+          maskPosition: "center",
+        }}
+      />
 
       <div
         aria-hidden

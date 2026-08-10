@@ -1,11 +1,23 @@
-const RULES = [
+import Link from "next/link";
+
+const RULES: { title: string; body: React.ReactNode }[] = [
   {
     title: "post whatever.",
-    body: "a thought, a warning, a confession at 2am. no followers to perform for — the whole campus just sees it.",
+    body: (
+      <>
+        Social mixers, club meetings, class help, or if you just want to
+        shitpost. We don&apos;t care. Well as long as it doesn&apos;t break
+        our{" "}
+        <Link href="/terms" className="underline underline-offset-2 hover:opacity-70 transition-opacity">
+          terms
+        </Link>
+        .
+      </>
+    ),
   },
   {
     title: "it all clears monday.",
-    body: "every week opens empty. nothing you post sticks around, and that's the point.",
+    body: "Every week's a blank slate. That means fresh stuff each week. Don't worry, you can still see prior weeks. You can't do that with real bulletin boards.",
   },
   {
     title: "students only.",
