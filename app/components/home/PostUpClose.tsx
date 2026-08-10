@@ -48,8 +48,8 @@ function Comment({ who, text }: { who: string; text: string }) {
 // site visibly wears the same skin as the product the screenshot came from.
 export default function PostUpClose() {
   return (
-    <section className="px-6 md:px-10 py-24 md:py-32 overflow-hidden" aria-label="What a post looks like">
-      <div className="max-w-6xl mx-auto grid gap-12 md:gap-16 md:grid-cols-[0.9fr_1.1fr] items-center">
+    <section className="py-24 md:py-32 overflow-hidden" aria-label="What a post looks like">
+      <div className="rail grid gap-12 md:gap-16 md:grid-cols-[0.9fr_1.1fr] items-center">
         {/* Left — the thesis, in the site's voice. */}
         <div className="scroll-reveal">
           <p

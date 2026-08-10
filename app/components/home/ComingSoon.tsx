@@ -67,8 +67,8 @@ export default function ComingSoon() {
   }, [posts]);
 
   return (
-    <section className="px-6 md:px-10 py-20 md:py-32 overflow-hidden">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-20 md:py-32 overflow-hidden">
+      <div className="rail">
         <h2
           className="font-extrabold tracking-tight mb-10"
           style={{ fontSize: "var(--step-4)", lineHeight: 1.02 }}

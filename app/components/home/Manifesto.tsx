@@ -19,8 +19,8 @@ const RULES = [
 
 export default function Manifesto() {
   return (
-    <section className="px-6 md:px-10 py-24" aria-label="How the board works">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-24" aria-label="How the board works">
+      <div className="rail">
         <p
           className="scroll-reveal mb-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.28em]"
           style={{ color: "var(--text-secondary)" }}

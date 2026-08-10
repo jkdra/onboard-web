@@ -43,7 +43,7 @@ export default function Footer() {
       className="py-12 text-center text-sm flex flex-col items-center gap-6"
       style={{ borderTop: "1px solid var(--border)", color: "var(--text-secondary)" }}
     >
-      <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row md:justify-between items-center gap-6">
+      <div className="rail flex flex-col md:flex-row md:justify-between items-center gap-6">
         <div className="flex flex-col items-center md:items-start gap-6">
           <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6">
             <Link href="/about" className="hover:underline">About</Link>

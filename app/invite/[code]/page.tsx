@@ -52,7 +52,7 @@ export default async function InvitePage({ params }: PageProps) {
 
   return (
     <>
-      <main id="main-content" className="flex-1 flex flex-col min-h-[85vh] justify-center relative overflow-hidden px-6 py-16 sm:px-10">
+      <main id="main-content" className="flex-1 flex flex-col min-h-[85vh] justify-center relative overflow-hidden py-16">
         {/* Soft radial glow — theme-aware (uses the text color at low alpha) */}
         <div className="absolute inset-0 z-[-1] overflow-hidden pointer-events-none">
           <div
@@ -61,7 +61,8 @@ export default async function InvitePage({ params }: PageProps) {
           />
         </div>
 
-        <div className="w-full max-w-xl mx-auto text-left animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <div className="rail animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <div className="max-w-xl">
           <h1
             className="font-display font-extrabold tracking-tight leading-[1.12] mb-5"
             style={{ color: "var(--text)", fontSize: "var(--step-3)" }}
@@ -151,7 +152,7 @@ export default async function InvitePage({ params }: PageProps) {
               Already have the app? Enter it when you sign up.
             </p>
           </div>
-        </div>
+        </div></div>
       </main>
       <FooterFinale />
     </>

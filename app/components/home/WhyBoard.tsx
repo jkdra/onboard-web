@@ -1,7 +1,7 @@
 export default function WhyBoard() {
   return (
-    <section className="px-6 md:px-10 py-28 md:py-40 overflow-hidden" aria-label="Why On Board exists">
-      <div className="max-w-6xl w-full mx-auto">
+    <section className="py-28 md:py-40 overflow-hidden" aria-label="Why On Board exists">
+      <div className="rail">
         <h2
           className="scroll-reveal font-extrabold tracking-tight"
           style={{ fontSize: "var(--step-4)", lineHeight: 0.98 }}

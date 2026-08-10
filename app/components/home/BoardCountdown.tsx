@@ -60,10 +60,10 @@ export default function BoardCountdown() {
 
   return (
     <section
-      className="px-6 md:px-10 py-24 md:py-32 overflow-hidden"
+      className="py-24 md:py-32 overflow-hidden"
       aria-label="This week's board wipes clean every Monday at midnight."
     >
-      <div className="max-w-4xl mx-auto">
+      <div className="rail">
         <p
           className="mb-6 text-xs sm:text-sm font-semibold uppercase tracking-[0.28em]"
           style={{ color: urgent ? RED : "var(--text-secondary)" }}

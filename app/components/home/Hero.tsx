@@ -30,8 +30,8 @@ export default function Hero() {
   // }
 
   return (
-    <section className="min-h-[88svh] flex flex-col justify-center px-6 md:px-10 relative overflow-hidden">
-      <div className="w-full">
+    <section className="min-h-[88svh] flex flex-col justify-center relative overflow-hidden">
+      <div className="rail">
         <h1 className="tracking-tight mb-8">
           <span
             className="rise-in block font-bold ml-[0.04em]"
@@ -60,13 +60,12 @@ export default function Hero() {
             fontSize: "var(--step-1)",
             lineHeight: 1.4,
             color: "var(--text-secondary)",
-            // Break as "One board, your whole campus." / "Clean slate every
-            // Monday." instead of splitting the phrase "Clean slate".
             textWrap: "balance",
             "--d": "0.45s",
           } as React.CSSProperties}
         >
-          One board, your whole campus. Clean slate every Monday.
+          One board, your whole campus — what everyone&apos;s actually saying
+          this week. It clears Monday.
         </p>
 
         <div className="rise-in max-w-md ml-[0.06em]" style={{ "--d": "0.6s" } as React.CSSProperties}>
@@ -77,10 +76,10 @@ export default function Hero() {
             className="inline-block px-6 py-3.5 rounded-2xl text-base font-semibold hover:opacity-85 transition-opacity"
             style={{ background: "var(--text)", color: "var(--bg)" }}
           >
-            Join Early Access
+            Get on this week&apos;s board
           </a>
           <p className="mt-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-            iphone only for now — android&apos;s coming
+            free · your campus email is the door · iphone for now
           </p>
 
           {/* Android waitlist — disabled, not how admission actually works right now.

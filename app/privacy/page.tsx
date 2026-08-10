@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <>
-      <main id="main-content" className="flex-1 px-6 pb-20">
-        <div className="max-w-2xl mx-auto">
+      <main id="main-content" className="flex-1 pb-20">
+        <div className="rail"><div className="max-w-2xl">
           <Link
             href="/"
             className="inline-block mt-12 mb-8 text-sm hover:underline"
@@ -204,7 +204,7 @@ export default function PrivacyPage() {
               </p>
             </Section>
           </div>
-        </div>
+        </div></div>
       </main>
 
       <FooterFinale />

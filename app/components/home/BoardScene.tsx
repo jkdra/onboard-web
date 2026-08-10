@@ -377,7 +377,7 @@ export default function BoardScene() {
 
   if (reduced) {
     return (
-      <section className="px-6 md:px-10 py-24">
+      <section className="py-24">
         <h2
           className="font-extrabold tracking-tight text-center mb-4"
           style={{ fontSize: "var(--step-4)", lineHeight: 1 }}
@@ -391,7 +391,7 @@ export default function BoardScene() {
           Every Monday at midnight, the board wipes clean. When the clock&apos;s
           almost out, the countdown turns red.
         </p>
-        <div className="max-w-3xl mx-auto flex justify-center">
+        <div className="rail flex justify-center">
           <PromptCard prompt="What's the most unhinged thing in your notes app right now?" className="mb-6" />
         </div>
         <div className="max-w-sm sm:max-w-md mx-auto grid grid-cols-2 gap-4">
