@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 
 const LINKS = [
@@ -13,13 +14,26 @@ const LINKS = [
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // The open menu owns the viewport — the page behind it shouldn't scroll.
+  // The open menu owns the viewport — the page behind it shouldn't
+  // scroll, and the header's own veil stands down (data attribute read by
+  // globals.css) so its gradient band doesn't smear over the menu's flat
+  // wash.
   useEffect(() => {
     if (!isOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    // Scroll lock via non-passive event capture, deliberately NOT via CSS
+    // overflow: `overflow:hidden` on body breaks position:sticky for its
+    // descendants (the header un-stuck and jumped off-screen the moment
+    // the menu opened), and on html it resets the scroll position to 0
+    // (the page behind the veil snapped to the top). Swallowing the
+    // gestures leaves both intact.
+    const prevent = (e: Event) => e.preventDefault();
+    document.addEventListener("wheel", prevent, { passive: false });
+    document.addEventListener("touchmove", prevent, { passive: false });
+    document.documentElement.dataset.menuOpen = "true";
     return () => {
-      document.body.style.overflow = prev;
+      document.removeEventListener("wheel", prevent);
+      document.removeEventListener("touchmove", prevent);
+      delete document.documentElement.dataset.menuOpen;
     };
   }, [isOpen]);
 
@@ -39,8 +53,13 @@ export default function MobileMenu() {
 
       {/* Full-viewport veil: the page stays visible behind a heavy blur +
           theme-tinted wash instead of being replaced by a hard sheet, and
-          the items drop DOWN out of the header they belong to. */}
-      {isOpen && (
+          the items drop DOWN out of the header they belong to. PORTALED to
+          <body>: as a header descendant, the fixed veil lived inside the
+          sticky header's stacking context, and once the header was stuck
+          it swallowed the wordmark and this very ✕ button — document-level
+          z (header 50 > veil 40) is unambiguous. Client-only state, so the
+          portal never runs during SSR. */}
+      {isOpen && createPortal(
         <div
           className="menu-veil-in fixed inset-0 z-40 md:hidden"
           style={{
@@ -66,7 +85,8 @@ export default function MobileMenu() {
               </Link>
             ))}
           </nav>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

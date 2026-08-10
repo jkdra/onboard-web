@@ -128,6 +128,13 @@ html {
   position: absolute;
   inset: 0 0 -45% 0;
   pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+/* While the mobile menu's full-viewport veil owns the screen, the header's
+   own veil stands down — two stacked washes read as a smeared band. */
+html[data-menu-open="true"] .header-veil,
+html[data-menu-open="true"] .header-tint {
+  opacity: 0;
 }
 .header-veil::before,
 .header-veil::after {
