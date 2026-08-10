@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import FooterFinale from "@/app/components/FooterFinale";
 import InviteDownloadButton from "./InviteDownloadButton";
+import InviteCodeCopy from "./InviteCodeCopy";
 import { APP_STORE_URL } from "@/lib/appStore";
 
 export const metadata: Metadata = {
@@ -35,6 +36,12 @@ async function fetchInviterHandle(code: string): Promise<string | null> {
   }
 }
 
+// The invite page is a full-bleed poster, not a card on a page — an
+// artifact from the friend, in the iOS share card's own composition:
+// leading-aligned lock-up with the inviter's monogram seated in the first
+// line (em-sized, flex-centered, so it stays optically locked to the text
+// at every viewport), one product line carrying the ephemerality hook, a
+// copyable code with The Host peeking over its top edge, one CTA.
 export default async function InvitePage({ params }: PageProps) {
   const { code } = await params;
   if (!CODE_PATTERN.test(code)) {
@@ -45,7 +52,7 @@ export default async function InvitePage({ params }: PageProps) {
 
   return (
     <>
-      <main id="main-content" className="flex-1 flex flex-col min-h-[80vh] items-center justify-center p-6 relative overflow-hidden">
+      <main id="main-content" className="flex-1 flex flex-col min-h-[85vh] justify-center relative overflow-hidden px-6 py-16 sm:px-10">
         {/* Soft radial glow — theme-aware (uses the text color at low alpha) */}
         <div className="absolute inset-0 z-[-1] overflow-hidden pointer-events-none">
           <div
@@ -54,69 +61,96 @@ export default async function InvitePage({ params }: PageProps) {
           />
         </div>
 
-        <div className="w-full max-w-md mx-auto flex flex-col items-center text-center animate-in fade-in slide-in-from-bottom-8 duration-700">
-          <div
-            className="mb-8 p-6 rounded-3xl border shadow-2xl w-full"
-            style={{ background: "var(--card)", borderColor: "var(--border)" }}
+        <div className="w-full max-w-xl mx-auto text-left animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <h1
+            className="font-display font-extrabold tracking-tight leading-[1.12] mb-5"
+            style={{ color: "var(--text)", fontSize: "var(--step-3)" }}
           >
-            <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto border"
-              style={{ background: "var(--bg)", borderColor: "var(--border)" }}
-            >
-              🎟️
-            </div>
-            <h1
-              className="text-3xl font-extrabold tracking-tight mb-2 font-display"
-              style={{ color: "var(--text)" }}
-            >
-              You&apos;re Invited!
-            </h1>
-            <p
-              className="text-base mb-6 font-medium"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              {inviterHandle ? (
-                <>
-                  <span className="font-bold" style={{ color: "var(--text)" }}>
-                    @{inviterHandle}
-                  </span>{" "}
-                  wants you On Board! Use their code to skip the waitlist.
-                </>
-              ) : (
-                <>Someone on campus wants you On Board! Use their code to skip the waitlist.</>
-              )}
-            </p>
+            {inviterHandle ? (
+              <>
+                <span className="flex items-center gap-[0.3em]">
+                  <span
+                    aria-hidden
+                    className="inline-grid flex-none place-items-center rounded-full font-display font-extrabold"
+                    style={{
+                      width: "1.05em",
+                      height: "1.05em",
+                      fontSize: "1em",
+                      background: "var(--text)",
+                      color: "var(--bg)",
+                    }}
+                  >
+                    <span style={{ fontSize: "0.42em" }}>
+                      {inviterHandle.charAt(0).toUpperCase()}
+                    </span>
+                  </span>
+                  <span className="truncate">@{inviterHandle}</span>
+                </span>
+                wants you
+                <br />
+                On Board.
+              </>
+            ) : (
+              <>
+                Someone on campus
+                <br />
+                wants you On Board.
+              </>
+            )}
+          </h1>
 
-            <div
-              className="p-6 rounded-2xl border mb-6"
-              style={{ background: "var(--bg)", borderColor: "var(--border)" }}
-            >
-              <p
-                className="text-xs font-bold uppercase tracking-widest mb-3"
-                style={{ color: "var(--text-secondary)" }}
-              >
-                Your Invite Code
-              </p>
-              <div
-                className="text-4xl font-black tracking-widest font-mono"
-                style={{ color: "var(--text)" }}
-              >
-                {code.toUpperCase()}
-              </div>
-            </div>
+          {/* One product line, carrying the ephemerality hook — a cold
+              recipient learns what this is before being asked to install. */}
+          <p
+            className="mb-10 max-w-[36ch]"
+            style={{ color: "var(--text-secondary)", fontSize: "var(--step-0)" }}
+          >
+            One board per campus. A fresh start every Monday —{" "}
+            <strong className="font-bold" style={{ color: "var(--text)" }}>
+              everything clears Sunday night.
+            </strong>{" "}
+            This code skips you past the waitlist.
+          </p>
 
-            <InviteDownloadButton
-              href={APP_STORE_URL}
-              className="group relative flex items-center justify-center gap-2 w-full py-4 px-6 rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all overflow-hidden"
-              style={{ background: "var(--text)", color: "var(--bg)" }}
-            >
-              <span className="relative z-10">Download on the App Store</span>
-            </InviteDownloadButton>
+          {/* The Host peeks over the code row's top edge — the countdown
+              card's corner-peek gesture, ported. He sits behind the opaque
+              row (DOM order), masked with the text color so he tracks both
+              themes for free. */}
+          <div className="relative max-w-sm mb-4">
+            <span
+              aria-hidden
+              className="absolute -top-[44px] right-2 w-[72px] h-[72px] pointer-events-none"
+              style={{
+                background: "var(--text)",
+                WebkitMaskImage: "url(/logo-happy.svg)",
+                maskImage: "url(/logo-happy.svg)",
+                WebkitMaskSize: "contain",
+                maskSize: "contain",
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                maskPosition: "center",
+              }}
+            />
+            <div className="relative">
+              <InviteCodeCopy code={code} />
+            </div>
           </div>
 
-          <p className="text-sm font-medium" style={{ color: "var(--text-secondary)" }}>
-            Already have the app? Open it and enter this code during signup.
-          </p>
+          <div className="max-w-sm">
+            <InviteDownloadButton
+              href={APP_STORE_URL}
+              className="flex items-center justify-center w-full py-4 px-6 rounded-full font-display font-extrabold text-base hover:scale-[1.02] active:scale-[0.98] transition-transform"
+              style={{ background: "var(--text)", color: "var(--bg)" }}
+            >
+              Download on the App Store
+            </InviteDownloadButton>
+
+            <p className="text-xs mt-4" style={{ color: "var(--text-secondary)" }}>
+              The code stays on your clipboard — paste it during signup.
+              Already have the app? Enter it when you sign up.
+            </p>
+          </div>
         </div>
       </main>
       <FooterFinale />
