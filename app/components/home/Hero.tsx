@@ -5,6 +5,7 @@
 // import { useState } from "react";
 // import { supabase } from "@/lib/supabase";
 import HoverLogo from "@/app/components/HoverLogo";
+import HeroCountdownCard from "@/app/components/home/HeroCountdownCard";
 import { APP_STORE_URL } from "@/lib/appStore";
 
 export default function Hero() {
@@ -31,7 +32,8 @@ export default function Hero() {
 
   return (
     <section className="min-h-[88svh] flex flex-col justify-center relative overflow-hidden">
-      <div className="rail">
+      <div className="rail grid items-center gap-10 md:gap-14 md:grid-cols-[1.15fr_0.85fr]">
+        <div>
         <h1 className="tracking-tight mb-8">
           <span
             className="rise-in block font-bold ml-[0.04em]"
@@ -128,22 +130,25 @@ export default function Hero() {
           </div>
           */}
         </div>
+        </div>
+
+        {/* The app's countdown card, live — the product artifact IS the
+            hero image, ticking the real time to this week's wipe. */}
+        <div className="rise-in justify-self-start md:justify-self-end" style={{ "--d": "0.75s" } as React.CSSProperties}>
+          <HeroCountdownCard />
+        </div>
       </div>
 
       <div
         aria-hidden
-        className="rise-in absolute bottom-6 left-1/2 -translate-x-1/2 text-xs font-semibold uppercase tracking-widest"
+        className="rise-in absolute bottom-6 left-1/2 -translate-x-1/2 text-xs font-semibold uppercase tracking-widest hidden md:block"
         style={{ color: "var(--text-secondary)", "--d": "1s" } as React.CSSProperties}
       >
         Scroll ↓
       </div>
 
-      {/* The little guy peeking out of the corner, fading into the next section. */}
-      <HoverLogo
-        size="clamp(220px, 30vw, 420px)"
-        className="absolute -right-8 -bottom-6 md:-right-10 md:-bottom-8 opacity-20 hover:opacity-35 transition-opacity"
-        style={{ transform: "rotate(-14deg)" }}
-      />
+      {/* The corner Host ghost retired — the countdown card is the hero's
+          artifact now and carries its own Host peek; two of him fought. */}
       <div
         aria-hidden
         className="absolute inset-x-0 bottom-0 h-28 pointer-events-none"
