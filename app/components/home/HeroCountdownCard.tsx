@@ -69,20 +69,21 @@ export default function HeroCountdownCard() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Download On Board on the App Store — this week's board clears Monday at midnight"
-      className="group relative block w-full max-w-sm rounded-3xl p-6 sm:p-7 overflow-hidden border shadow-xl transition-transform duration-300 hover:scale-[1.02]"
+      className="group relative flex flex-col w-full max-w-[340px] aspect-[20/23] rounded-3xl p-6 sm:p-7 overflow-hidden border shadow-xl transition-transform duration-300 hover:scale-[1.02]"
       style={{
         background: "var(--card)",
         borderColor: "var(--border)",
         color: "var(--text)",
       }}
     >
-      {/* This week's prompt — same fictional week as the board scene below. */}
-      <p
-        className="font-bold text-base leading-snug mb-10 pr-6"
-        style={{ fontFamily: DISPLAY_FONT }}
-      >
+      {/* This week's prompt — the app sets it in SemiExpanded regular at
+          full opacity (body text, not display type), prompt top, countdown
+          pinned to the card's bottom edge. */}
+      <p className="text-[17px] leading-snug pr-4">
         What&apos;s the most unhinged thing in your notes app right now?
       </p>
+
+      <span className="flex-1" aria-hidden />
 
       <p
         className="text-[11px] font-bold uppercase tracking-[0.22em] mb-2 transition-colors duration-700"
@@ -112,7 +113,7 @@ export default function HeroCountdownCard() {
       </div>
 
       <p
-        className="mt-6 text-sm font-semibold underline underline-offset-4 decoration-2 group-hover:opacity-70 transition-opacity"
+        className="mt-5 text-sm font-semibold underline underline-offset-4 decoration-2 group-hover:opacity-70 transition-opacity"
         style={{ color: "var(--text)" }}
       >
         Download on the App Store

@@ -53,9 +53,12 @@ function lineClass(line: PostLine, hasTitle: boolean): string {
       return "font-bold text-xs sm:text-sm leading-snug tracking-tight" + em;
     case "bullet":
     case "body":
+      // Body text is the app's body text: SemiExpanded (the default sans),
+      // regular weight, full-opacity ink. Body-only cards promote SIZE
+      // only — the app's body-only tier scales the type, it doesn't embolden.
       return (hasTitle
         ? "text-xs sm:text-sm leading-relaxed"
-        : "font-extrabold text-sm sm:text-xl leading-snug tracking-tight") + em;
+        : "text-sm sm:text-lg leading-snug") + em;
   }
 }
 
@@ -103,12 +106,7 @@ export default function BoardCard({
             <p
               key={i}
               className={lineClass(line, hasTitle) + (line.kind === "bullet" ? " flex gap-1.5" : "")}
-              style={{
-                color:
-                  line.kind === "title" || line.kind === "subtitle" || !hasTitle
-                    ? "var(--card-ink)"
-                    : "var(--card-ink-secondary)",
-              }}
+              style={{ color: "var(--card-ink)" }}
             >
               {line.kind === "bullet" && <span aria-hidden>•</span>}
               <span>{line.text}</span>

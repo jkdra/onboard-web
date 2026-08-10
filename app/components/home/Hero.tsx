@@ -37,10 +37,10 @@ export default function Hero() {
         <h1 className="tracking-tight mb-8">
           <span
             className="rise-in block font-bold ml-[0.04em]"
-            // Kisses the wordmark below: the pull-in is in em of the SMALL
-            // line, so the lockup tightens proportionally as the pair
-            // scales instead of drifting apart at display sizes.
-            style={{ fontSize: "var(--step-2)", lineHeight: 1.1, marginBottom: "-0.18em", "--d": "0.15s" } as React.CSSProperties}
+            // Breathing room in em of the SMALL line, so the gap between
+            // the kicker and the wordmark GROWS proportionally as the pair
+            // scales — dynamic separation, not a fixed pixel gap.
+            style={{ fontSize: "var(--step-2)", lineHeight: 1.1, marginBottom: "0.45em", "--d": "0.15s" } as React.CSSProperties}
           >
             Let&apos;s get you
           </span>
